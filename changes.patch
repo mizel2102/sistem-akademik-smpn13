@@ -1,0 +1,249 @@
+*** End Patch
+		 <!-- Shape 2: Bottom Left -->
+		 <div class="absolute -bottom-32 left-1/4 w-80 h-80 rounded-full" style="background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);"></div>
+	 </div>
+
+	 <!-- Grid Overlay -->
+	 <div class="absolute inset-0 opacity-30" style="background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+	 <!-- Content -->
+	 <div class="relative z-10 flex items-center justify-center w-full">
+		 <div class="max-w-4xl mx-auto px-10 py-20 text-center">
+			 <!-- Badge -->
+			 <div class="inline-flex items-center gap-2 mb-6" style="background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.20); border-radius: 999px; padding: 6px 16px;">
+				 <span class="w-1.5 h-1.5 rounded-full" style="background: #38bdf8;"></span>
+				 <span class="text-white text-xs font-bold tracking-widest uppercase">Portal Akademik Digital</span>
+			 </div>
+
+			 <!-- Heading -->
+			 <h1 class="text-5xl sm:text-6xl font-black text-white mb-6 leading-tight tracking-tight" style="line-height: 1.1; letter-spacing: -1px;">
+				 Sekolah lebih cerdas,<br><span style="color: #38bdf8;">masa depan lebih cerah.</span>
+			 </h1>
+
+			 <!-- Description -->
+			 <p class="text-base sm:text-lg text-white/70 max-w-2xl mx-auto mb-8" style="line-height: 1.7;">
+				 SMPN 13 Sungai Raya menghadirkan sistem akademik terpadu — nilai, absensi, jadwal, dan pengumuman dalam satu platform yang mudah diakses kapan saja.
+			 </p>
+
+			 <!-- Buttons -->
+			 <div class="flex flex-col sm:flex-row gap-3 justify-center mb-14">
+				 <a href="/pendaftaran" style="background: #38bdf8; color: #0f172a; box-shadow: 0 10px 30px rgba(56,189,248,0.3);" class="inline-flex items-center justify-center px-7 py-3 rounded-full font-bold text-sm transition duration-300 hover:bg-sky-600">
+					 Daftar Sekarang →
+				 </a>
+				 <a href="/login" style="background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.25); color: #fff;" class="inline-flex items-center justify-center px-7 py-3 rounded-full font-semibold text-sm transition duration-300 hover:bg-white/20">
+					 Masuk ke Akun
+				 </a>
+			 </div>
+
+			 <!-- Stats -->
+			 <div class="flex flex-wrap justify-center gap-10 sm:gap-16">
+				 <div class="text-center">
+					 <div class="text-3xl sm:text-4xl font-black text-white">1.200+</div>
+					 <div class="text-xs text-white/50 font-medium mt-1">Siswa Aktif</div>
+				 </div>
+				 <div class="text-center">
+					 <div class="text-3xl sm:text-4xl font-black text-white">80+</div>
+					 <div class="text-xs text-white/50 font-medium mt-1">Tenaga Pengajar</div>
+				 </div>
+				 <div class="text-center">
+					 <div class="text-3xl sm:text-4xl font-black text-white">98%</div>
+					 <div class="text-xs text-white/50 font-medium mt-1">Tingkat Kehadiran</div>
+				 </div>
+			 </div>
+		 </div>
+	 </div>
+ </section>
+
+diff --git a/resources/views/partials/features.blade.php b/resources/views/partials/features.blade.php
+--- a/resources/views/partials/features.blade.php
++++ b/resources/views/partials/features.blade.php
+ @@ -1,200 +1,200 @@
+ <!-- FEATURES SECTION -->
+ <section id="fitur" class="bg-slate-50" style="padding: 80px 40px;">
+	 <div class="max-w-6xl mx-auto">
+		 <!-- Header -->
+		 <div class="text-center mb-16">
+			 <div class="text-sky-500 text-xs font-bold tracking-widest uppercase mb-2">Fitur Unggulan</div>
+			 <h2 class="text-4xl sm:text-5xl font-black text-slate-900 mb-4" style="letter-spacing: -0.5px;">Semua yang Anda butuhkan</h2>
+			 <p class="text-slate-600 max-w-2xl mx-auto text-base" style="line-height: 1.7;">Dirancang khusus untuk siswa, guru, dan orang tua agar proses belajar-mengajar makin transparan dan efisien.</p>
+		 </div>
+
+		 <!-- Features Grid -->
+		 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			 <!-- Feature 1 -->
+			 <div class="bg-white rounded-3xl border border-slate-100 p-7 transition duration-300 hover:shadow-md">
+				 <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-2xl mb-4">📊</div>
+				 <h3 class="text-base font-bold text-slate-900 mb-2">Nilai Realtime</h3>
+				 <p class="text-slate-600 text-sm" style="line-height: 1.6;">Pantau perkembangan nilai siswa kapan saja melalui dashboard yang selalu diperbarui.</p>
+			 </div>
+
+			 <!-- Feature 2 -->
+			 <div class="bg-white rounded-3xl border border-slate-100 p-7 transition duration-300 hover:shadow-md">
+				 <div class="w-12 h-12 rounded-2xl bg-cyan-50 flex items-center justify-center text-2xl mb-4">✅</div>
+				 <h3 class="text-base font-bold text-slate-900 mb-2">Absensi GPS</h3>
+				 <p class="text-slate-600 text-sm" style="line-height: 1.6;">Absensi berbasis lokasi dan foto selfie untuk memastikan kehadiran yang valid dan akurat.</p>
+			 </div>
+
+			 <!-- Feature 3 -->
+			 <div class="bg-white rounded-3xl border border-slate-100 p-7 transition duration-300 hover:shadow-md">
+				 <div class="w-12 h-12 rounded-2xl bg-violet-50 flex items-center justify-center text-2xl mb-4">🗓️</div>
+				 <h3 class="text-base font-bold text-slate-900 mb-2">Jadwal Digital</h3>
+				 <p class="text-slate-600 text-sm" style="line-height: 1.6;">Jadwal pelajaran harian tersedia online, termasuk notifikasi perubahan jadwal mendadak.</p>
+			 </div>
+
+			 <!-- Feature 4 -->
+			 <div class="bg-white rounded-3xl border border-slate-100 p-7 transition duration-300 hover:shadow-md">
+				 <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-2xl mb-4">📢</div>
+				 <h3 class="text-base font-bold text-slate-900 mb-2">Pengumuman Instan</h3>
+				 <p class="text-slate-600 text-sm" style="line-height: 1.6;">Informasi sekolah langsung diterima semua warga sekolah tanpa tertunda.</p>
+			 </div>
+
+			 <!-- Feature 5 -->
+			 <div class="bg-white rounded-3xl border border-slate-100 p-7 transition duration-300 hover:shadow-md">
+				 <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-2xl mb-4">📄</div>
+				 <h3 class="text-base font-bold text-slate-900 mb-2">Rapor Digital</h3>
+				 <p class="text-slate-600 text-sm" style="line-height: 1.6;">Lihat dan unduh rapor semester langsung dari portal tanpa perlu datang ke sekolah.</p>
+			 </div>
+
+			 <!-- Feature 6 -->
+			 <div class="bg-white rounded-3xl border border-slate-100 p-7 transition duration-300 hover:shadow-md">
+				 <div class="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-2xl mb-4">🔒</div>
+				 <h3 class="text-base font-bold text-slate-900 mb-2">Akses Aman</h3>
+				 <p class="text-slate-600 text-sm" style="line-height: 1.6;">Sistem login berlapis untuk siswa, guru, dan admin dengan hak akses yang terpisah.</p>
+			 </div>
+		 </div>
+	 </div>
+ </section>
+
+diff --git a/resources/views/partials/team.blade.php b/resources/views/partials/team.blade.php
+--- a/resources/views/partials/team.blade.php
++++ b/resources/views/partials/team.blade.php
+ @@ -1,200 +1,200 @@
+ <!-- TEAM SECTION -->
+ <section class="bg-white" style="padding: 80px 40px;">
+	 <div class="max-w-6xl mx-auto">
+		 <!-- Header -->
+		 <div class="text-center mb-12">
+			 <div class="text-sky-500 text-xs font-bold tracking-widest uppercase mb-2">Tim Pengajar</div>
+			 <h2 class="text-4xl sm:text-5xl font-black text-slate-900 mb-4" style="letter-spacing: -0.5px;">Guru Berpengalaman Kami</h2>
+			 <p class="text-slate-600 max-w-2xl mx-auto text-base" style="line-height: 1.7;">Didukung tenaga pendidik bersertifikat dan berdedikasi untuk generasi terbaik bangsa.</p>
+		 </div>
+
+		 <!-- Team Grid -->
+		 @if ($teachers && $teachers->count() > 0)
+			 <div class="flex justify-center gap-7 flex-wrap">
+				 @foreach ($teachers->take(4) as $index => $teacher)
+					 <div class="text-center">
+						 <!-- Avatar -->
+						 @php
+							 $gradients = [
+								 'linear-gradient(135deg, #0ea5e9, #6366f1)',
+								 'linear-gradient(135deg, #a855f7, #ec4899)',
+								 'linear-gradient(135deg, #10b981, #0ea5e9)',
+								 'linear-gradient(135deg, #f59e0b, #ef4444)'
+							 ];
+							 $gradient = $gradients[$index % 4];
+							 $initials = strtoupper(substr($teacher->name, 0, 2));
+						 @endphp
+
+						 @if ($teacher->image)
+							 <div class="mx-auto mb-3 w-24 h-24 rounded-full border-4 border-sky-100 overflow-hidden shadow-lg" style="box-shadow: 0 4px 20px rgba(14,165,233,0.2);">
+								 <img src="{{ asset('storage/' . $teacher->image) }}" alt="{{ $teacher->name }}" class="w-full h-full object-cover">
+							 </div>
+						 @else
+							 <div class="mx-auto mb-3 w-24 h-24 rounded-full border-4 border-blue-50 shadow-lg flex items-center justify-center font-black text-2xl text-white" style="background: {{ $gradient }}; box-shadow: 0 4px 20px rgba(14,165,233,0.2);">
+								 {{ $initials }}
+							 </div>
+						 @endif
+
+						 <!-- Name -->
+						 <div class="text-sm font-bold text-slate-900">{{ $teacher->name }}</div>
+						 <!-- Subject -->
+						 <div class="text-xs text-slate-600 mt-1">{{ $teacher->subject ?? 'Guru' }}</div>
+						 <!-- Badge -->
+						 @if ($teacher->role_label)
+							 <div class="inline-flex mt-2 bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">{{ $teacher->role_label }}</div>
+						 @endif
+					 </div>
+				 @endforeach
+			 </div>
+		 @endif
+	 </div>
+ </section>
+
+diff --git a/resources/views/partials/footer.blade.php b/resources/views/partials/footer.blade.php
+--- a/resources/views/partials/footer.blade.php
++++ b/resources/views/partials/footer.blade.php
+ @@ -1,300 +1,300 @@
+ <!-- CTA BAND -->
+ <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); padding: 64px 40px; text-align: center;">
+	 <h2 class="text-4xl font-black text-white mb-3" style="letter-spacing: -0.5px;">Siap bergabung dengan SMPN 13?</h2>
+	 <p class="text-white/60 text-base max-w-2xl mx-auto mb-8">Daftarkan akun Anda sekarang dan nikmati kemudahan portal akademik digital.</p>
+	 <div class="flex flex-col sm:flex-row gap-3 justify-center">
+		 <a href="/pendaftaran" style="background: #38bdf8; color: #0f172a;" class="inline-flex items-center justify-center px-7 py-3 rounded-full font-bold text-sm transition duration-300 hover:bg-sky-600">
+			 Daftar Siswa Baru
+		 </a>
+		 <a href="#fitur" style="background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.25); color: #fff;" class="inline-flex items-center justify-center px-7 py-3 rounded-full font-semibold text-sm transition duration-300 hover:bg-white/20">
+			 Pelajari Lebih Lanjut
+		 </a>
+	 </div>
+ </div>
+
+ <!-- FOOTER -->
+ <footer style="background: #0f172a; padding: 52px 40px 28px;">
+	 <div class="max-w-6xl mx-auto">
+		 <!-- Footer Grid -->
+		 <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+			 <!-- Column 1: Branding -->
+			 <div>
+				 <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: #fff; letter-spacing: 0.5px;" class="mb-3">AMIS</div>
+				 <div style="font-size: 14px; font-weight: 700; color: #fff; margin-top: 12px;">SMPN 13 Sungai Raya</div>
+				 <div style="font-size: 13px; color: #64748b; line-height: 1.6; margin-top: 8px;">Portal akademik digital untuk siswa, guru, dan orang tua di Sungai Raya, Kalimantan Barat.</div>
+			 </div>
+
+			 <!-- Column 2: Navigation -->
+			 <div>
+				 <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #475569; margin-bottom: 16px;">Navigasi</div>
+				 <ul style="list-style: none; padding: 0; margin: 0;">
+					 <li style="margin-bottom: 10px;"><a href="{{ route('home') }}" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Beranda</a></li>
+					 <li style="margin-bottom: 10px;"><a href="#fitur" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Fitur</a></li>
+					 <li style="margin-bottom: 10px;"><a href="{{ route('guru.index') }}" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Data Guru</a></li>
+					 <li style="margin-bottom: 10px;"><a href="{{ route('berita.index') }}" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Berita Sekolah</a></li>
+					 <li style="margin-bottom: 10px;"><a href="#" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Prestasi</a></li>
+				 </ul>
+			 </div>
+
+			 <!-- Column 3: Services -->
+			 <div>
+				 <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #475569; margin-bottom: 16px;">Layanan</div>
+				 <ul style="list-style: none; padding: 0; margin: 0;">
+					 <li style="margin-bottom: 10px;"><a href="{{ route('login') }}" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Login Siswa</a></li>
+					 <li style="margin-bottom: 10px;"><a href="{{ route('login') }}" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Login Guru</a></li>
+					 <li style="margin-bottom: 10px;"><a href="/pendaftaran" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Pendaftaran</a></li>
+					 <li style="margin-bottom: 10px;"><a href="#" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Rapor Digital</a></li>
+				 </ul>
+			 </div>
+
+			 <!-- Column 4: Contact -->
+			 <div>
+				 <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #475569; margin-bottom: 16px;">Kontak</div>
+				 <ul style="list-style: none; padding: 0; margin: 0;">
+					 <li style="margin-bottom: 10px;"><a href="mailto:info@smpn13.sch.id" style="color: #94a3b8; font-size: 13px; text-decoration: none;">info@smpn13.sch.id</a></li>
+					 <li style="margin-bottom: 10px;"><a href="tel:+62561123456" style="color: #94a3b8; font-size: 13px; text-decoration: none;">(0561) 123-4567</a></li>
+					 <li style="margin-bottom: 10px;"><a href="#" style="color: #94a3b8; font-size: 13px; text-decoration: none;">Jl. Sungai Raya, Kubu Raya</a></li>
+					 <li style="margin-bottom: 10px;"><a href="https://wa.me/6282312345678" style="color: #94a3b8; font-size: 13px; text-decoration: none;">WhatsApp Sekolah</a></li>
+				 </ul>
+			 </div>
+		 </div>
+
+		 <!-- Footer Bottom -->
+		 <div style="border-top: 1px solid #1e293b; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+			 <div style="color: #475569; font-size: 13px;">© {{ date('Y') }} SMPN 13 Sungai Raya. Semua hak dilindungi.</div>
+			 <div style="display: flex; gap: 10px;">
+				 <a href="https://facebook.com" target="_blank" rel="noopener" style="width: 34px; height: 34px; border-radius: 8px; background: #1e293b; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 13px; font-weight: 700; text-decoration: none;">f</a>
+				 <a href="https://instagram.com" target="_blank" rel="noopener" style="width: 34px; height: 34px; border-radius: 8px; background: #1e293b; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 13px; font-weight: 700; text-decoration: none;">ig</a>
+				 <a href="https://youtube.com" target="_blank" rel="noopener" style="width: 34px; height: 34px; border-radius: 8px; background: #1e293b; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 13px; font-weight: 700; text-decoration: none;">yt</a>
+			 </div>
+		 </div>
+	 </div>
+ </footer>

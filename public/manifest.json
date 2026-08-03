@@ -1,0 +1,17 @@
+{
+  "name": "Sistem Akademik SMPN 13",
+  "short_name": "SIAKAD 13",
+  "start_url": "/dashboard",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "display": "standalone",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/images/logo_putih_besar.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

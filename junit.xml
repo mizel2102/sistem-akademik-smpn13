@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\laragon\www\sistem-akademik-smpn13\phpunit.xml" tests="1" assertions="2" errors="1" failures="0" skipped="0" time="0.863341">
+    <testsuite name="Feature" tests="1" assertions="2" errors="1" failures="0" skipped="0" time="0.863341">
+      <testsuite name="Tests\Feature\AcademicFeatureTest" file="Academic Feature (Tests\Feature\AcademicFeature)" tests="1" assertions="2" errors="1" failures="0" skipped="0" time="0.863341">
+        <testcase name="Student can submit attendance and view history" file="Academic Feature (Tests\Feature\AcademicFeature)::Student can submit attendance and view history" class="Tests\Feature\AcademicFeatureTest" classname="Tests.Feature.AcademicFeatureTest" assertions="2" time="0.863341">
+          <error type="Error">Student can submit attendance and view historyError: Call to a member function all() on array&#13;
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:81
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:47
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:433
+at vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:207
+at tests\Feature\AcademicFeatureTest.php:122</error>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

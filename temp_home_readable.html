@@ -1,0 +1,635 @@
+﻿﻿
+
+
+
+<!doctype html>
+<!-- Reference: https://www.sman1yogya.sch.id/id
+    USAGE: This external site is used only as a visual/reference guide.
+    Do NOT copy content, images, or other assets from the site into this repository
+    without explicit permission. Any assets used must be added manually with
+    proper license/permission and documented in REFERENCE.md. -->
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Beranda - SMPN 13 Sungai Raya | Portal Akademik Digital</title>
+    <!-- Load Google Fonts (used by Tailwind utilities and custom CSS) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+            <link rel="preload" as="style" href="http://127.0.0.1:8000/build/assets/app-B-YsI4PX.css" /><link rel="preload" as="style" href="http://127.0.0.1:8000/build/assets/app-kjxkUA5T.css" /><link rel="modulepreload" as="script" href="http://127.0.0.1:8000/build/assets/app-C7K4MQMw.js" /><link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/app-B-YsI4PX.css" /><link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/app-kjxkUA5T.css" /><script type="module" src="http://127.0.0.1:8000/build/assets/app-C7K4MQMw.js"></script>    </head>
+<body class="antialiased text-slate-900 bg-slate-50">
+    <a href="#main-content" class="skip-link sr-only focus:not-sr-only fixed top-4 left-4 z-50 bg-white text-blue-700 px-3 py-2 rounded shadow">Langsung ke konten</a>
+    <header x-data="{ mobileOpen: false, mobileSearch: false }" class="sticky top-0 z-50 bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+            <!-- Left: Logo -->
+            <div class="flex items-center gap-3">
+                <a href="http://127.0.0.1:8000" class="flex items-center gap-3" aria-label="Beranda SMPN 13 Sungai Raya">
+                                            <div class="h-10 w-10 flex items-center justify-center rounded bg-blue-50 text-blue-700 font-bold">AM</div>
+                                        <div class="leading-tight">
+                        <div class="text-sm font-bold text-slate-900">SMPN 13 Sungai Raya</div>
+                        <div class="text-xs text-slate-500">Sistem Informasi Akademik</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Middle: Navigation (desktop) -->
+            <nav class="hidden lg:flex lg:items-center lg:space-x-6" role="navigation" aria-label="Main menu">
+                <!-- Profil Sekolah -->
+                <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative">
+                    <button tabindex="0" aria-haspopup="true" :aria-expanded="open" @keydown.escape="open=false" @focus="open=true" @blur="open=false" class="text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Profil Sekolah</button>
+                    <div x-show="open" x-cloak class="absolute left-0 mt-2 bg-white rounded-xl shadow-lg border border-slate-100 py-2 min-w-[200px]">
+                        <a href="#kata-sambutan" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Kata Sambutan</a>
+                        <a href="#sejarah" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Sejarah</a>
+                        <a href="#visi-misi" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Visi &amp; Misi</a>
+                        <a href="#kondisi-sekolah" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Kondisi Sekolah</a>
+                        <a href="http://127.0.0.1:8000/guru" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Tenaga Pendidik</a>
+                    </div>
+                </div>
+
+                <!-- Berita -->
+                <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative">
+                    <button tabindex="0" aria-haspopup="true" :aria-expanded="open" @keydown.escape="open=false" @focus="open=true" @blur="open=false" class="text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Berita</button>
+                    <div x-show="open" x-cloak class="absolute left-0 mt-2 bg-white rounded-xl shadow-lg border border-slate-100 py-2 min-w-[200px]">
+                        <a href="http://127.0.0.1:8000/berita" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Berita Terbaru</a>
+                        <a href="#info-sekolah" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Info Sekolah</a>
+                        <a href="#agenda" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Agenda</a>
+                    </div>
+                </div>
+
+                <!-- Layanan -->
+                <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative">
+                    <button tabindex="0" aria-haspopup="true" :aria-expanded="open" @keydown.escape="open=false" @focus="open=true" @blur="open=false" class="text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Layanan</button>
+                    <div x-show="open" x-cloak class="absolute left-0 mt-2 bg-white rounded-xl shadow-lg border border-slate-100 py-2 min-w-[200px]">
+                        <a href="#ekskul" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Ekstrakurikuler</a>
+                        <a href="http://127.0.0.1:8000/login" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Login Siswa</a>
+                        <a href="/pendaftaran" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Pendaftaran</a>
+                    </div>
+                </div>
+
+                <a href="http://127.0.0.1:8000/prestasi" class="text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Prestasi</a>
+                <a href="http://127.0.0.1:8000/alumni" class="text-sm font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Alumni</a>
+                <a href="#kontak" class="text-sm font-semibold text-slate-700">Kontak</a>
+            </nav>
+
+            <!-- Right: actions -->
+            <div class="flex items-center gap-3">
+                <button @click="mobileSearch = !mobileSearch" class="md:hidden inline-flex items-center p-2 rounded-full text-slate-500 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Toggle search">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
+                </button>
+
+                <button class="hidden md:inline-flex items-center p-2 rounded-full text-slate-500 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Search">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/></svg>
+                </button>
+
+                <a href="http://127.0.0.1:8000/login" class="hidden md:inline-flex items-center px-4 py-1.5 border border-blue-600 text-blue-600 rounded-md text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500">Masuk</a>
+
+                <!-- Mobile hamburger -->
+                <button @click="mobileOpen = !mobileOpen" :aria-expanded="mobileOpen" class="inline-flex lg:hidden items-center justify-center p-2 rounded-md text-slate-700 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Open main menu">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div x-show="mobileOpen" x-cloak class="lg:hidden bg-white border-t border-slate-100">
+        <div class="px-4 pt-4 pb-6 space-y-1">
+            <!-- Mobile search input -->
+            <div x-show="mobileSearch" x-cloak class="px-3 pb-3">
+                <input type="search" placeholder="Cari..." class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Cari di situs">
+            </div>
+            <div x-data="{ open:false }">
+                <button @click="open = !open" class="w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-slate-700">Profil Sekolah</button>
+                <div x-show="open" x-cloak class="mt-1 space-y-1">
+                    <a href="#kata-sambutan" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Kata Sambutan</a>
+                    <a href="#sejarah" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Sejarah</a>
+                    <a href="#visi-misi" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Visi &amp; Misi</a>
+                    <a href="#kondisi-sekolah" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Kondisi Sekolah</a>
+                    <a href="http://127.0.0.1:8000/guru" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Tenaga Pendidik</a>
+                </div>
+            </div>
+
+            <div x-data="{ open:false }">
+                <button @click="open = !open" class="w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-slate-700">Berita</button>
+                <div x-show="open" x-cloak class="mt-1 space-y-1">
+                    <a href="http://127.0.0.1:8000/berita" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Berita Terbaru</a>
+                    <a href="#info-sekolah" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Info Sekolah</a>
+                    <a href="#agenda" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Agenda</a>
+                </div>
+            </div>
+
+            <div x-data="{ open:false }">
+                <button @click="open = !open" class="w-full text-left px-3 py-2 rounded-md text-sm font-semibold text-slate-700">Layanan</button>
+                <div x-show="open" x-cloak class="mt-1 space-y-1">
+                    <a href="#ekskul" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Ekstrakurikuler</a>
+                    <a href="http://127.0.0.1:8000/login" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Login Siswa</a>
+                    <a href="/pendaftaran" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-blue-600">Pendaftaran</a>
+                </div>
+            </div>
+
+            <a href="http://127.0.0.1:8000/prestasi" class="block px-3 py-2 text-sm font-semibold text-slate-700">Prestasi</a>
+            <a href="http://127.0.0.1:8000/alumni" class="block px-3 py-2 text-sm font-semibold text-slate-700">Alumni</a>
+            <a href="#kontak" class="block px-3 py-2 text-sm font-semibold text-slate-700">Kontak</a>
+
+            <div class="pt-2">
+                <a href="http://127.0.0.1:8000/login" class="w-full block text-center px-4 py-2 border border-blue-600 text-blue-600 rounded-md font-semibold">Masuk</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <main class="min-h-screen">
+        <div id="main-content"></div>
+                <section x-data="{ current: 0, total: 3, paused: false }" x-init="setInterval(() => { if(!paused) current = (current + 1) % total }, 4000)" @mouseenter="paused = true" @mouseleave="paused = false" @keydown.window.arrow-left="current = (current - 1 + total) % total" @keydown.window.arrow-right="current = (current + 1) % total" tabindex="0" class="relative overflow-hidden min-h-[480px] lg:min-h-[620px]">
+    <!-- Slides -->
+    <div class="absolute inset-0">
+        <!-- Slide 1 -->
+                <div x-show="current === 0" x-cloak class="absolute inset-0 bg-center bg-cover transition-opacity duration-700 bg-gradient-to-r from-blue-900 to-blue-700" :class="{'opacity-100': current===0, 'opacity-0 pointer-events-none': current!==0 }" style=""></div>
+
+        <!-- Slide 2 -->
+                <div x-show="current === 1" x-cloak class="absolute inset-0 bg-center bg-cover transition-opacity duration-700 bg-gradient-to-r from-slate-800 to-slate-600" :class="{'opacity-100': current===1, 'opacity-0 pointer-events-none': current!==1 }" style=""></div>
+
+        <!-- Slide 3 -->
+                <div x-show="current === 2" x-cloak class="absolute inset-0 bg-center bg-cover transition-opacity duration-700 bg-gradient-to-r from-sky-900 to-sky-700" :class="{'opacity-100': current===2, 'opacity-0 pointer-events-none': current!==2 }" style=""></div>
+
+        <!-- Overlay dark -->
+        <div class="absolute inset-0 bg-black/50"></div>
+    </div>
+
+    <!-- Content: center-bottom -->
+    <div class="relative z-10 flex items-end justify-center h-full">
+        <div class="text-center pb-16 px-4">
+            <div class="text-white text-5xl lg:text-7xl font-extrabold tracking-wide">SMPN 13 SUNGAI RAYA</div>
+            <div class="text-lg italic mt-3 text-white/95">Unggul dalam Prestasi, Berkarakter Mulia</div>
+
+            <div class="mt-8 flex justify-center gap-4">
+                <a href="/pendaftaran" class="inline-flex items-center px-8 py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 text-lg">Daftar Sekarang</a>
+                <a href="#fitur" class="inline-flex items-center px-8 py-3 bg-white text-slate-900 rounded-md font-semibold hover:bg-slate-100 text-lg">Pelajari Lebih Lanjut</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation dots -->
+    <div class="absolute bottom-6 left-0 right-0 flex items-center justify-center gap-3 z-20" role="tablist" aria-label="Slide navigation">
+        <template x-for="i in total" :key="i">
+            <button @click="current = i-1" :class="{'bg-white': current===i-1, 'bg-white/40': current!==i-1 }" class="w-3.5 h-3.5 rounded-full transition-colors" :aria-label="`Slide ${i}`" :aria-pressed="current===i-1" tabindex="0"></button>
+        </template>
+    </div>
+
+    <!-- Arrows -->
+    <button @click="current = (current - 1 + total) % total" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 p-2 rounded-full text-white focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Slide sebelumnya">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+
+    <button @click="current = (current + 1) % total" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 p-2 rounded-full text-white focus:outline-none focus:ring-2 focus:ring-blue-500" aria-label="Slide berikutnya">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
+</section>
+
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid gap-8 lg:grid-cols-12">
+                <main class="lg:col-span-8 space-y-12">
+                    
+                    <section id="berita">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-bold text-slate-900">Berita Terbaru</h2>
+                            <a href="http://127.0.0.1:8000/berita" class="text-sm text-blue-600 hover:underline">Lihat Semua →</a>
+                        </div>
+
+                        <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                                                                                        <article class="rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                                                                            <div class="w-full h-36 bg-gradient-to-r from-slate-200 to-slate-300 flex items-center justify-center text-2xl">📰</div>
+                                                                        <div class="p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 text-slate-700">Kegiatan</span>
+                                            <span class="text-xs text-slate-500">14 Juli 2026</span>
+                                        </div>
+                                        <h3 class="font-semibold text-slate-900 text-lg">Upacara Pembukaan Pekan Kreativitas Sekolah</h3>
+                                        <p class="text-sm text-slate-600 mt-1 line-clamp-2">Siswa menampilkan pameran poster pendidikan dan lomba seni tradisional khas Kalbar.</p>
+                                        <a href="#" class="inline-block mt-2 text-sm text-blue-600 hover:underline">Baca →</a>
+                                    </div>
+                                </article>
+                                                            <article class="rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                                                                            <div class="w-full h-36 bg-gradient-to-r from-slate-200 to-slate-300 flex items-center justify-center text-2xl">📰</div>
+                                                                        <div class="p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 text-slate-700">Kunjungan</span>
+                                            <span class="text-xs text-slate-500">10 Juli 2026</span>
+                                        </div>
+                                        <h3 class="font-semibold text-slate-900 text-lg">Kunjungan Edukatif ke Museum Provinsi</h3>
+                                        <p class="text-sm text-slate-600 mt-1 line-clamp-2">Kelas 8 mengadakan kunjungan untuk mempelajari sejarah dan budaya lokal.</p>
+                                        <a href="#" class="inline-block mt-2 text-sm text-blue-600 hover:underline">Baca →</a>
+                                    </div>
+                                </article>
+                                                            <article class="rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                                                                            <div class="w-full h-36 bg-gradient-to-r from-slate-200 to-slate-300 flex items-center justify-center text-2xl">📰</div>
+                                                                        <div class="p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 text-slate-700">Pendidikan</span>
+                                            <span class="text-xs text-slate-500">05 Juli 2026</span>
+                                        </div>
+                                        <h3 class="font-semibold text-slate-900 text-lg">Pelatihan Literasi Digital untuk Guru</h3>
+                                        <p class="text-sm text-slate-600 mt-1 line-clamp-2">Workshop penguatan perangkat pembelajaran daring dan penilaian formatif.</p>
+                                        <a href="#" class="inline-block mt-2 text-sm text-blue-600 hover:underline">Baca →</a>
+                                    </div>
+                                </article>
+                                                            <article class="rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                                                                            <div class="w-full h-36 bg-gradient-to-r from-slate-200 to-slate-300 flex items-center justify-center text-2xl">📰</div>
+                                                                        <div class="p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 text-slate-700">Teknologi</span>
+                                            <span class="text-xs text-slate-500">28 Juni 2026</span>
+                                        </div>
+                                        <h3 class="font-semibold text-slate-900 text-lg">Tim Robotika Lolos Final Regional</h3>
+                                        <p class="text-sm text-slate-600 mt-1 line-clamp-2">Tim sekolah melaju ke final regional setelah presentasi prototipe edukatif.</p>
+                                        <a href="#" class="inline-block mt-2 text-sm text-blue-600 hover:underline">Baca →</a>
+                                    </div>
+                                </article>
+                                                            <article class="rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                                                                            <div class="w-full h-36 bg-gradient-to-r from-slate-200 to-slate-300 flex items-center justify-center text-2xl">📰</div>
+                                                                        <div class="p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 text-slate-700">Kegiatan</span>
+                                            <span class="text-xs text-slate-500">22 Juni 2026</span>
+                                        </div>
+                                        <h3 class="font-semibold text-slate-900 text-lg">Bakti Sosial dan Penanaman Pohon</h3>
+                                        <p class="text-sm text-slate-600 mt-1 line-clamp-2">Program lingkungan oleh OSIS bekerja sama dengan masyarakat setempat.</p>
+                                        <a href="#" class="inline-block mt-2 text-sm text-blue-600 hover:underline">Baca →</a>
+                                    </div>
+                                </article>
+                                                            <article class="rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
+                                                                            <div class="w-full h-36 bg-gradient-to-r from-slate-200 to-slate-300 flex items-center justify-center text-2xl">📰</div>
+                                                                        <div class="p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 text-slate-700">Seni</span>
+                                            <span class="text-xs text-slate-500">02 Mei 2026</span>
+                                        </div>
+                                        <h3 class="font-semibold text-slate-900 text-lg">Pameran Karya Seni Rupa Siswa</h3>
+                                        <p class="text-sm text-slate-600 mt-1 line-clamp-2">Karya menampilkan tema budaya Kalimantan Barat dan kearifan lokal.</p>
+                                        <a href="#" class="inline-block mt-2 text-sm text-blue-600 hover:underline">Baca →</a>
+                                    </div>
+                                </article>
+                                                    </div>
+                    </section>
+
+                    
+                    <section id="sambutan" class="pt-8">
+                        <h2 class="text-xl lg:text-2xl font-extrabold text-slate-900">Sambutan Kepala Sekolah</h2>
+                        <div class="mt-4 flex items-start gap-6">
+                            <div class="flex-shrink-0">
+                                                                                                                                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-600 to-sky-500 text-white flex items-center justify-center font-bold text-xl">DH</div>
+                                                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-slate-900">Drs. H. Ahmad Fikri, M.M.</div>
+                                <div class="text-sm text-slate-500">Kepala SMPN 13 Sungai Raya</div>
+                                <p class="mt-3 text-sm text-slate-700 line-clamp-4">Selamat datang di SMPN 13 Sungai Raya. Kami berkomitmen memberikan pendidikan bermutu dan membentuk karakter generasi muda yang berakhlak dan berprestasi.</p>
+                                <a href="#" class="inline-block mt-3 text-sm text-blue-600 hover:underline">Baca Selengkapnya →</a>
+                            </div>
+                        </div>
+                    </section>
+
+                    
+                    <section id="prestasi" class="pt-8">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl lg:text-2xl font-extrabold text-slate-900">Prestasi Terbaru</h2>
+                            <a href="http://127.0.0.1:8000/prestasi" class="text-sm text-blue-600 hover:underline">Lihat Semua →</a>
+                        </div>
+                        <div class="mt-3 bg-white border border-slate-100 rounded-lg">
+                                                                                        <div class="flex justify-between items-start py-3 px-4 border-b last:border-b-0">
+                                    <div>
+                                        <div class="font-semibold text-slate-900 text-sm">Juara 1 Lomba Karya Tulis Ilmiah Kabupaten</div>
+                                        <div class="text-xs text-slate-500">Fauzan Maulana</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-slate-500">30 Juni 2026</div>
+                                                                                <span class="mt-2 inline-block text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-700">Kabupaten</span>
+                                    </div>
+                                </div>
+                                                            <div class="flex justify-between items-start py-3 px-4 border-b last:border-b-0">
+                                    <div>
+                                        <div class="font-semibold text-slate-900 text-sm">Juara 2 Lomba Robotika Provinsi</div>
+                                        <div class="text-xs text-slate-500">Riska Novita</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-slate-500">18 Juni 2026</div>
+                                                                                <span class="mt-2 inline-block text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">Provinsi</span>
+                                    </div>
+                                </div>
+                                                            <div class="flex justify-between items-start py-3 px-4 border-b last:border-b-0">
+                                    <div>
+                                        <div class="font-semibold text-slate-900 text-sm">Peringkat 3 Olimpiade Matematika Kabupaten</div>
+                                        <div class="text-xs text-slate-500">Dedi Prasetyo</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-slate-500">12 Mei 2026</div>
+                                                                                <span class="mt-2 inline-block text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-700">Kabupaten</span>
+                                    </div>
+                                </div>
+                                                            <div class="flex justify-between items-start py-3 px-4 border-b last:border-b-0">
+                                    <div>
+                                        <div class="font-semibold text-slate-900 text-sm">Medali Perak Kejuaraan Basket Antar Sekolah</div>
+                                        <div class="text-xs text-slate-500">Tim Basket SMPN 13</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-slate-500">02 Mei 2026</div>
+                                                                                <span class="mt-2 inline-block text-xs font-semibold px-2 py-1 rounded-full bg-blue-100 text-blue-700">Provinsi</span>
+                                    </div>
+                                </div>
+                                                            <div class="flex justify-between items-start py-3 px-4 border-b last:border-b-0">
+                                    <div>
+                                        <div class="font-semibold text-slate-900 text-sm">Penghargaan Karya Seni Terbaik Festival Budaya</div>
+                                        <div class="text-xs text-slate-500">Maya Kusumawati</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-slate-500">28 April 2026</div>
+                                                                                <span class="mt-2 inline-block text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-700">Kabupaten</span>
+                                    </div>
+                                </div>
+                                                            <div class="flex justify-between items-start py-3 px-4 border-b last:border-b-0">
+                                    <div>
+                                        <div class="font-semibold text-slate-900 text-sm">Sertifikat Inovasi Pembelajaran Digital Tingkat Nasional</div>
+                                        <div class="text-xs text-slate-500">Ahmad Rasyid</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-slate-500">10 April 2026</div>
+                                                                                <span class="mt-2 inline-block text-xs font-semibold px-2 py-1 rounded-full bg-red-100 text-red-700">Nasional</span>
+                                    </div>
+                                </div>
+                                                    </div>
+                    </section>
+
+                    
+                    <section id="ekstrakurikuler" class="pt-8">
+                        <h2 class="text-xl lg:text-2xl font-extrabold text-slate-900">Ekstrakurikuler</h2>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                                                                                        <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">PRAMUKA</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">PMR</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">PASKIBRA</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">ROHIS</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">BASKET</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">VOLI</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">FUTSAL</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">SENI TARI</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">PADUAN SUARA</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">MADING</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">ENGLISH CLUB</span>
+                                                            <span class="px-4 py-2 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition">OLIMPIADE SAINS</span>
+                                                    </div>
+                    </section>
+
+                    
+                    <section id="guru" class="pt-8">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl lg:text-2xl font-extrabold text-slate-900">Guru dan Tenaga Kependidikan</h2>
+                            <div class="flex gap-2">
+                                <a href="http://127.0.0.1:8000/guru" class="text-sm text-blue-600 hover:underline">Guru</a>
+                                <a href="#" class="text-sm text-blue-600 hover:underline">Karyawan</a>
+                            </div>
+                        </div>
+                        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                                                                        <div class="text-center">
+                                                                                                                    <div class="w-20 h-20 rounded-full mx-auto bg-gradient-to-br from-blue-600 to-sky-500 text-white flex items-center justify-center font-bold">BS</div>
+                                                                        <div class="mt-2 text-sm font-semibold">Budi Santoso, S.Pd</div>
+                                    <div class="text-xs text-slate-500">Matematika</div>
+                                </div>
+                                                            <div class="text-center">
+                                                                                                                    <div class="w-20 h-20 rounded-full mx-auto bg-gradient-to-br from-slate-600 to-slate-400 text-white flex items-center justify-center font-bold">SN</div>
+                                                                        <div class="mt-2 text-sm font-semibold">Siti Nurhaliza, M.Pd</div>
+                                    <div class="text-xs text-slate-500">Bahasa Indonesia</div>
+                                </div>
+                                                            <div class="text-center">
+                                                                                                                    <div class="w-20 h-20 rounded-full mx-auto bg-gradient-to-br from-emerald-600 to-green-400 text-white flex items-center justify-center font-bold">AR</div>
+                                                                        <div class="mt-2 text-sm font-semibold">Ahmad Rasyid, S.T</div>
+                                    <div class="text-xs text-slate-500">IPA &amp; Fisika</div>
+                                </div>
+                                                            <div class="text-center">
+                                                                                                                    <div class="w-20 h-20 rounded-full mx-auto bg-gradient-to-br from-pink-600 to-rose-400 text-white flex items-center justify-center font-bold">DW</div>
+                                                                        <div class="mt-2 text-sm font-semibold">Dewi Wulandari, S.Pd</div>
+                                    <div class="text-xs text-slate-500">Bahasa Inggris</div>
+                                </div>
+                                                            <div class="text-center">
+                                                                                                                    <div class="w-20 h-20 rounded-full mx-auto bg-gradient-to-br from-blue-600 to-sky-500 text-white flex items-center justify-center font-bold">EP</div>
+                                                                        <div class="mt-2 text-sm font-semibold">Eka Prasetyo, S.Pd</div>
+                                    <div class="text-xs text-slate-500">IPS</div>
+                                </div>
+                                                            <div class="text-center">
+                                                                                                                    <div class="w-20 h-20 rounded-full mx-auto bg-gradient-to-br from-slate-600 to-slate-400 text-white flex items-center justify-center font-bold">MK</div>
+                                                                        <div class="mt-2 text-sm font-semibold">Maya Kusumawati, S.Sn</div>
+                                    <div class="text-xs text-slate-500">Seni Rupa</div>
+                                </div>
+                                                    </div>
+                    </section>
+
+                    
+                    <section id="alumni" class="pt-8">
+                        <h2 class="text-xl lg:text-2xl font-extrabold text-slate-900">Profil Alumni</h2>
+                        <div class="mt-4 grid gap-4 sm:grid-cols-3">
+                                                                                        <article class="rounded-xl border overflow-hidden">
+                                                                            <div class="w-full h-48 bg-gradient-to-b from-slate-300 to-slate-400 flex items-center justify-center text-4xl">👤</div>
+                                                                        <div class="p-4">
+                                        <div class="font-bold">Anton Hidayat</div>
+                                        <p class="text-sm text-slate-600 mt-2 line-clamp-3">Pengusaha lokal di bidang pertanian yang aktif membuka peluang magang bagi siswa.</p>
+                                        <a href="#" class="inline-block mt-3 text-sm text-blue-600 hover:underline">Baca Profil →</a>
+                                    </div>
+                                </article>
+                                                            <article class="rounded-xl border overflow-hidden">
+                                                                            <div class="w-full h-48 bg-gradient-to-b from-slate-300 to-slate-400 flex items-center justify-center text-4xl">👤</div>
+                                                                        <div class="p-4">
+                                        <div class="font-bold">Lestari Putri, S.H.</div>
+                                        <p class="text-sm text-slate-600 mt-2 line-clamp-3">Pejabat pemerintahan daerah yang memfasilitasi program beasiswa bagi pelajar berprestasi.</p>
+                                        <a href="#" class="inline-block mt-3 text-sm text-blue-600 hover:underline">Baca Profil →</a>
+                                    </div>
+                                </article>
+                                                            <article class="rounded-xl border overflow-hidden">
+                                                                            <div class="w-full h-48 bg-gradient-to-b from-slate-300 to-slate-400 flex items-center justify-center text-4xl">👤</div>
+                                                                        <div class="p-4">
+                                        <div class="font-bold">Rian Setiawan, S.Kom</div>
+                                        <p class="text-sm text-slate-600 mt-2 line-clamp-3">Praktisi TI yang kembali melakukan pelatihan literasi digital untuk sekolah-sekolah di Kubu Raya.</p>
+                                        <a href="#" class="inline-block mt-3 text-sm text-blue-600 hover:underline">Baca Profil →</a>
+                                    </div>
+                                </article>
+                                                            <article class="rounded-xl border overflow-hidden">
+                                                                            <div class="w-full h-48 bg-gradient-to-b from-slate-300 to-slate-400 flex items-center justify-center text-4xl">👤</div>
+                                                                        <div class="p-4">
+                                        <div class="font-bold">Siti Rahmah, M.Pd</div>
+                                        <p class="text-sm text-slate-600 mt-2 line-clamp-3">Penggerak pendidikan inklusif yang mendirikan pusat bimbingan belajar di daerah pesisir.</p>
+                                        <a href="#" class="inline-block mt-3 text-sm text-blue-600 hover:underline">Baca Profil →</a>
+                                    </div>
+                                </article>
+                                                    </div>
+                    </section>
+
+                </main>
+
+                <aside class="lg:col-span-4 space-y-8">
+                    
+                    <div class="rounded-xl overflow-hidden border border-slate-200">
+                        <div class="bg-blue-600 text-white font-bold px-4 py-3">Info Sekolah</div>
+                        <div class="divide-y divide-slate-100">
+                                                                                        <p class="p-4 text-sm text-slate-500">Belum ada info.</p>
+                                                    </div>
+                        <a href="#" class="block text-center py-2 text-sm text-blue-600 hover:underline">Selengkapnya →</a>
+                    </div>
+
+                    
+                    <div class="rounded-xl overflow-hidden border border-slate-200">
+                        <div class="bg-blue-600 text-white font-bold px-4 py-3">Agenda Sekolah</div>
+                        <div class="divide-y divide-slate-100 p-2">
+                                                                                        <div class="flex gap-3 py-3 px-2">
+                                    <span class="text-blue-500 text-lg flex-shrink-0">📅</span>
+                                    <div>
+                                        <p class="text-sm font-semibold">Rapat Persiapan Pekan Kreativitas Sekolah</p>
+                                        <p class="text-xs text-slate-500">17 Juli 2026</p>
+                                    </div>
+                                </div>
+                                                            <div class="flex gap-3 py-3 px-2">
+                                    <span class="text-blue-500 text-lg flex-shrink-0">📅</span>
+                                    <div>
+                                        <p class="text-sm font-semibold">Workshop Penguatan Literasi Digital</p>
+                                        <p class="text-xs text-slate-500">05 Agustus 2026</p>
+                                    </div>
+                                </div>
+                                                            <div class="flex gap-3 py-3 px-2">
+                                    <span class="text-blue-500 text-lg flex-shrink-0">📅</span>
+                                    <div>
+                                        <p class="text-sm font-semibold">Rapat Orang Tua/Wali - Evaluasi Semester</p>
+                                        <p class="text-xs text-slate-500">28 November 2026</p>
+                                    </div>
+                                </div>
+                                                    </div>
+                    </div>
+
+                    
+                    <div class="rounded-xl border border-slate-200 p-4 text-center">
+                                                    <div class="h-16 w-16 mx-auto rounded-full bg-slate-200"></div>
+                                                <p class="mt-3 font-bold text-slate-900 text-sm">SMPN 13 Sungai Raya</p>
+                        <p class="text-xs text-slate-500 mt-1">Unggul dalam Prestasi, Berkarakter Mulia</p>
+                        <div class="flex justify-center gap-3 mt-4">
+                            <a href="#" class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold">f</a>
+                            <a href="#" class="w-9 h-9 rounded-full bg-pink-500 flex items-center justify-center text-white text-sm">ig</a>
+                            <a href="#" class="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center text-white text-sm">yt</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        
+        <section id="kontak" class="bg-slate-50 py-10">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <h2 class="text-lg font-bold text-slate-900">Hubungi Kami</h2>
+                <div class="mt-4 grid gap-6 lg:grid-cols-2">
+                    <div>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15968!2d109.3617!3d-0.0218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMCcwNy44IlMgMTA5wrAyMScwMi4xIkU!5e0!3m2!1sid!2sid!4v1" width="100%" height="350" class="rounded-xl" loading="lazy"></iframe>
+                    </div>
+                    <div>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <div class="text-2xl">📍</div>
+                                <div>
+                                    <div class="font-semibold">Jl. Sungai Raya No. 123, Sungai Raya, Kubu Raya, Kalimantan Barat</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="text-2xl">📧</div>
+                                <div class="text-sm">info@smpn13.sch.id</div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="text-2xl">📞</div>
+                                <div class="text-sm">(0561) 123-4567</div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="text-2xl">📱</div>
+                                <div class="text-sm">WhatsApp: 0823-1234-5678</div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="text-2xl">🕐</div>
+                                <div class="text-sm">Senin-Jumat: 07.00-15.00 WIB</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 bg-white border border-slate-200 rounded-xl p-4">
+                            <h3 class="font-semibold">Kotak Saran</h3>
+                            <form x-data @submit.prevent="alert('Terima kasih!')" action="http://127.0.0.1:8000" method="POST" class="mt-3 space-y-3">
+                                <input type="text" name="name" placeholder="Nama" class="w-full px-3 py-2 border rounded-md">
+                                <input type="email" name="email" placeholder="Email" class="w-full px-3 py-2 border rounded-md">
+                                <textarea name="message" rows="4" placeholder="Pesan" class="w-full px-3 py-2 border rounded-md"></textarea>
+                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md">Kirim Pesan</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-blue-800 text-white">
+    <!-- Footer Top -->
+    <div class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Column 1: Branding -->
+                <div>
+                                            <img src="http://127.0.0.1:8000/images/logo_putih_besar.png" alt="SMAN 1 Yogyakarta" class="h-16">
+                    
+                    <div class="mt-3 text-white/80 text-sm">SMAN 1 Yogyakarta — Sekolah unggulan yang mendukung perkembangan akademik, karakter, dan kreativitas siswa melalui pembelajaran inovatif.</div>
+
+                    <div class="mt-4 flex items-center gap-3">
+                        <a href="#" class="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white/90 hover:bg-white/5" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 10-11.5 9.9v-7h-2.2v-2.9h2.2V9.1c0-2.2 1.3-3.4 3.3-3.4.96 0 1.97.17 1.97.17v2.2h-1.12c-1.1 0-1.44.68-1.44 1.38v1.65h2.44l-.39 2.9h-2.05V22A10 10 0 0022 12z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white/90 hover:bg-white/5" aria-label="Instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm6 4.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9zM18.5 6a1 1 0 110 2 1 1 0 010-2z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white/90 hover:bg-white/5" aria-label="YouTube">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M10 15l5.19-3L10 9v6zm12-3c0 1.1-.9 2-2 2h-1.4l-.9.1c-1.9.2-7.8.2-9.7 0L7.4 14H6c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2h1.4l.9-.1c1.9-.2 7.8-.2 9.7 0l.9.1H20c1.1 0 2 .9 2 2v4z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Info Sekolah (notifications) -->
+                <div>
+                    <div class="font-bold text-sm uppercase tracking-wider mb-4">Info Sekolah</div>
+                                                        </div>
+
+                <!-- Column 3: Agenda Sekolah -->
+                <div>
+                    <div class="font-bold text-sm uppercase tracking-wider mb-4">Agenda Sekolah</div>
+                                            <div class="flex gap-3 items-start mb-3">
+                            <div class="text-2xl">📅</div>
+                            <div>
+                                <div class="text-sm text-white">Rapat Persiapan Pekan Kreativitas Sekolah</div>
+                                <div class="text-xs text-white/60 mt-1">17 Juli 2026</div>
+                            </div>
+                        </div>
+                                            <div class="flex gap-3 items-start mb-3">
+                            <div class="text-2xl">📅</div>
+                            <div>
+                                <div class="text-sm text-white">Workshop Penguatan Literasi Digital</div>
+                                <div class="text-xs text-white/60 mt-1">05 Agustus 2026</div>
+                            </div>
+                        </div>
+                                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="bg-slate-900 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <div class="text-slate-400 text-sm">© 2026. Hak Cipta SMPN 13 Sungai Raya</div>
+            <div class="flex items-center gap-4">
+                <a href="#" class="text-slate-500 text-sm hover:text-white">Terms of Use</a>
+                <a href="#" class="text-slate-500 text-sm hover:text-white">Kebijakan Privasi</a>
+                <a href="#" class="text-slate-500 text-sm hover:text-white">Bantuan</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
+

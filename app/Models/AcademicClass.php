@@ -24,6 +24,10 @@ class AcademicClass extends Model
                 $class->access_token = static::generateUniqueToken();
             }
         });
+
+        // static::saved(function (AcademicClass $class) {
+        //     app(\App\Services\TeacherAcademicService::class)->autoEnrollStudentsByGradeLevel($class);
+        // });
     }
 
     public static function generateUniqueToken(): string

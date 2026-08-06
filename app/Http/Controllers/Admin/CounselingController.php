@@ -21,9 +21,9 @@ class CounselingController extends Controller
             });
         }
 
-        $counselings = $query->paginate(20);
+        $items = $query->paginate(20);
 
-        return view('admin.counselings.index', compact('counselings'));
+        return view('admin.counselings.index', compact('items'));
     }
 
     public function create()

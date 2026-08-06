@@ -17,7 +17,7 @@
             <nav class="hidden lg:block flex-1">
                 <ul class="flex items-center justify-end gap-6 text-sm font-semibold uppercase text-white">
                     <li><a href="<?php echo e(route('home')); ?>" class="hover:text-yellow-400 transition <?php echo e(request()->routeIs('home') ? 'text-yellow-400' : ''); ?>">Beranda</a></li>
-                    <li><a href="#" class="hover:text-yellow-400 transition">Profil</a></li>
+                    <li><a href="<?php echo e(auth()->check() ? route('profile.show') : route('login')); ?>" class="hover:text-yellow-400 transition <?php echo e(request()->routeIs('profile.show') ? 'text-yellow-400' : ''); ?>">Profil</a></li>
                     <li><a href="<?php echo e(Route::has('berita.index') ? route('berita.index') : '#'); ?>" class="hover:text-yellow-400 transition <?php echo e(request()->routeIs('berita.index') ? 'text-yellow-400' : ''); ?>">Berita</a></li>
                     <li><a href="<?php echo e(Route::has('prestasi.index') ? route('prestasi.index') : route('home') . '#prestasi'); ?>" class="hover:text-yellow-400 transition <?php echo e(request()->routeIs('prestasi.index') ? 'text-yellow-400' : ''); ?>">Prestasi</a></li>
                     <li><a href="<?php echo e(Route::has('guru.index') ? route('guru.index') : route('home') . '#guru'); ?>" class="hover:text-yellow-400 transition <?php echo e(request()->routeIs('guru.index') ? 'text-yellow-400' : ''); ?>">Guru</a></li>
@@ -43,7 +43,7 @@
     <div x-show="mobileOpen" @click.outside="mobileOpen = false" x-cloak x-transition.opacity.duration.300ms class="fixed inset-0 top-[76px] z-40 bg-blue-900/95 backdrop-blur-xl lg:hidden h-screen overflow-y-auto border-t border-blue-800">
         <div class="flex flex-col px-6 py-8 space-y-6 text-white uppercase font-semibold">
             <a href="<?php echo e(route('home')); ?>" @click="mobileOpen = false" class="text-xl tracking-tight hover:text-yellow-400">Beranda</a>
-            <a href="#" @click="mobileOpen = false" class="text-xl tracking-tight hover:text-yellow-400">Profil</a>
+            <a href="<?php echo e(auth()->check() ? route('profile.show') : route('login')); ?>" @click="mobileOpen = false" class="text-xl tracking-tight hover:text-yellow-400">Profil</a>
             <a href="<?php echo e(Route::has('berita.index') ? route('berita.index') : '#'); ?>" @click="mobileOpen = false" class="text-xl tracking-tight hover:text-yellow-400">Berita</a>
             <a href="<?php echo e(Route::has('prestasi.index') ? route('prestasi.index') : route('home') . '#prestasi'); ?>" @click="mobileOpen = false" class="text-xl tracking-tight hover:text-yellow-400">Prestasi</a>
             <a href="<?php echo e(Route::has('guru.index') ? route('guru.index') : route('home') . '#guru'); ?>" @click="mobileOpen = false" class="text-xl tracking-tight hover:text-yellow-400">Guru</a>

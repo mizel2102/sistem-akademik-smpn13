@@ -67,7 +67,7 @@ class AcademicController extends Controller
         $studentStats = collect();
 
         if ($teacher) {
-            $classIds = \App\Models\AcademicClass::whereHas('schedules', fn ($q) => $q->where('teacher_id', $teacher->id))
+            $classIds = \App\Models\AcademicClass::whereHas('schedules', fn($q) => $q->where('teacher_id', $teacher->id))
                 ->orWhere('teacher_id', $teacher->id)
                 ->pluck('id');
 
@@ -86,7 +86,7 @@ class AcademicController extends Controller
                     'attendances as alpha_count' => fn($q) => $q->where('status', 'alpha'),
                 ])
                 ->get()
-                ->map(function($student) {
+                ->map(function ($student) {
                     $recSp = null;
                     if ($student->alpha_count >= 9) {
                         $recSp = 'SP3';
@@ -106,8 +106,12 @@ class AcademicController extends Controller
     public function subjects(): View
     {
         $teacher = Auth::user()->teacher;
-        $subject = $teacher ? $teacher->subject : null;
-        return view('teacher.subjects', compact('subject'));
+        $primarySubject = $teacher ? $teacher->subject : null;
+
+        $classes = $teacher ? $this->service->getClassesForTeacher($teacher) : collect();
+        $allSubjects = \App\Models\Subject::orderBy('name', 'asc')->get();
+
+        return view('teacher.subjects', compact('primarySubject', 'classes', 'allSubjects'));
     }
 
     public function warningLetters(): View
@@ -115,11 +119,10 @@ class AcademicController extends Controller
         $teacher = Auth::user()->teacher;
         $warningLetters = collect();
         if ($teacher) {
-            // Get warning letters for students in teacher's classes (schedule-based)
-            $classIds = \App\Models\AcademicClass::whereHas('schedules', fn ($q) => $q->where('teacher_id', $teacher->id))
+            $classIds = \App\Models\AcademicClass::whereHas('schedules', fn($q) => $q->where('teacher_id', $teacher->id))
                 ->orWhere('teacher_id', $teacher->id)
                 ->pluck('id');
-            $studentIds = \App\Models\Student::whereIn('academic_class_id', $classIds)->pluck('id');
+            $studentIds = \App\Models\Student::query()->whereIn('academic_class_id', $classIds, 'and', false)->pluck('id');
             $warningLetters = \App\Models\WarningLetter::with(['student.user'])
                 ->whereIn('student_id', $studentIds)
                 ->latest()
@@ -161,7 +164,7 @@ class AcademicController extends Controller
             'reason' => 'required|string|max:2000',
         ]);
 
-        // Find the student by NISN (student_number) or NIS
+        /** @disregard P1005 */
         $student = \App\Models\Student::where('student_number', $data['student_number'])
             ->orWhere('nis', $data['student_number'])
             ->first();
@@ -170,7 +173,6 @@ class AcademicController extends Controller
             return back()->withInput()->withErrors(['student_number' => 'Siswa dengan NISN tersebut tidak ditemukan.']);
         }
 
-        // Verify the student is enrolled in one of the classes taught by the teacher
         $teacherStudents = $this->service->getStudentOptionsForTeacher($teacher);
         $enrolledIds = collect($teacherStudents)->pluck('id')->all();
 
@@ -199,14 +201,63 @@ class AcademicController extends Controller
     public function students(): View
     {
         $teacher = Auth::user()->teacher;
-        $students = collect();
-        if ($teacher) {
-            $classIds = $this->service->getClassesForTeacher($teacher)->pluck('id');
-            $students = \App\Models\Student::with(['user', 'academicClass'])
-                ->whereIn('academic_class_id', $classIds)
-                ->paginate(20);
+        $classes = $teacher ? $this->service->getClassesForTeacher($teacher) : collect();
+
+        if ($classes->isEmpty()) {
+            $classes = \App\Models\AcademicClass::orderBy('name', 'asc')->get();
         }
-        return view('teacher.students', compact('students'));
+
+        $classIds = $classes->pluck('id')->all();
+
+        // Extract grade levels taught by this teacher (e.g., IX/9, VIII/8, VII/7)
+        $gradeLevels = [];
+        foreach ($classes as $c) {
+            if (preg_match('/(IX|VIII|VII|9|8|7)/i', $c->name, $matches)) {
+                $rawGrade = strtoupper($matches[1]);
+                $gradeLevels[] = $rawGrade;
+                if ($rawGrade === 'IX') $gradeLevels[] = '9';
+                if ($rawGrade === '9') $gradeLevels[] = 'IX';
+                if ($rawGrade === 'VIII') $gradeLevels[] = '8';
+                if ($rawGrade === '8') $gradeLevels[] = 'VIII';
+                if ($rawGrade === 'VII') $gradeLevels[] = '7';
+                if ($rawGrade === '7') $gradeLevels[] = 'VII';
+            }
+        }
+        $gradeLevels = array_unique($gradeLevels);
+
+        $query = \App\Models\Student::with(['user', 'academicClass', 'classes']);
+
+        // Filter by specific class if selected in dropdown
+        if (request()->filled('class_id')) {
+            $filterClassId = (int) request('class_id');
+            $query->where(function ($q) use ($filterClassId) {
+                $q->where('academic_class_id', $filterClassId)
+                    ->orWhereHas('classes', fn($sub) => $sub->where('academic_classes.id', $filterClassId));
+            });
+        } else {
+            // Strictly filter by teacher's classes
+            $query->where(function ($q) use ($classIds) {
+                if (! empty($classIds)) {
+                    $q->whereIn('academic_class_id', $classIds)
+                        ->orWhereHas('classes', fn($sub) => $sub->whereIn('academic_classes.id', $classIds));
+                } else {
+                    $q->whereRaw('1 = 0');
+                }
+            });
+        }
+
+        if (request()->filled('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('student_number', 'like', "%{$search}%")
+                    ->orWhere('nis', 'like', "%{$search}%")
+                    ->orWhereHas('user', fn($u) => $u->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        $students = $query->orderBy('student_number')->paginate(20)->withQueryString();
+
+        return view('teacher.students', compact('students', 'classes'));
     }
 
     public function reportCards(): View

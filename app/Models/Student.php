@@ -15,6 +15,13 @@ class Student extends Model
 {
     use HasFactory;
 
+    // protected static function booted(): void
+    // {
+    //     static::saved(function (Student $student) {
+    //         \App\Services\TeacherAcademicService::autoEnrollStudentInClasses($student);
+    //     });
+    // }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

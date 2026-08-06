@@ -26,6 +26,9 @@
                 <li>
                     <x-nav-item route="dashboard" icon="grid">Dashboard</x-nav-item>
                 </li>
+                <li>
+                    <x-nav-item route="profile.show" icon="user">Profil Saya</x-nav-item>
+                </li>
             </ul>
         </div>
 
@@ -163,9 +166,6 @@
                     <li>
                         <x-nav-item route="student.attendance.index" icon="calendar">Absensi</x-nav-item>
                     </li>
-                    <li>
-                        <x-nav-item route="student.schedule.index" icon="calendar">Jadwal</x-nav-item>
-                    </li>
                 </ul>
             </div>
 
@@ -184,15 +184,19 @@
     <!-- Sidebar Footer -->
     <div class="border-t border-white/10 px-4 py-6">
         @if(auth()->check())
-            <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-                    {{ optional(auth()->user())->name ? substr(auth()->user()->name, 0, 2) : 'U' }}
-                </div>
+            <a href="{{ route('profile.show') }}" class="flex items-center gap-3 group transition hover:opacity-90">
+                @if(auth()->user()?->avatar_url)
+                    <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="h-10 w-10 rounded-full object-cover ring-2 ring-gold transition-all">
+                @else
+                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white group-hover:ring-2 group-hover:ring-gold transition-all">
+                        {{ optional(auth()->user())->name ? substr(auth()->user()->name, 0, 2) : 'U' }}
+                    </div>
+                @endif
                 <div class="min-w-0 flex-1">
-                    <p class="truncate text-sm font-semibold text-white">{{ optional(auth()->user())->name }}</p>
+                    <p class="truncate text-sm font-semibold text-white group-hover:text-gold transition-colors">{{ optional(auth()->user())->name }}</p>
                     <p class="truncate text-xs text-slate-400 capitalize">{{ $role ?? 'User' }}</p>
                 </div>
-            </div>
+            </a>
             <form action="{{ route('logout') }}" method="POST" class="mt-4">
                 @csrf
                 <button type="submit"

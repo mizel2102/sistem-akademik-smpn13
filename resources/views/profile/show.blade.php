@@ -26,9 +26,13 @@
 <div class="mx-auto max-w-2xl space-y-6 py-8">
     <div class="rounded-2xl bg-white p-6 shadow-sm">
         <div class="flex flex-col gap-6 sm:flex-row sm:items-center">
-            <div class="flex h-20 w-20 items-center justify-center rounded-full bg-navy text-3xl font-extrabold text-gold">
-                {{ $initials ?: 'US' }}
-            </div>
+            @if($user->avatar_url)
+                <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="h-20 w-20 rounded-full object-cover ring-4 ring-navy/20">
+            @else
+                <div class="flex h-20 w-20 items-center justify-center rounded-full bg-navy text-3xl font-extrabold text-gold ring-4 ring-navy/20">
+                    {{ $initials ?: 'US' }}
+                </div>
+            @endif
             <div class="space-y-3">
                 <div class="flex flex-wrap items-center gap-3">
                     <h1 class="text-2xl font-bold text-slate-900">{{ $user->name }}</h1>
@@ -56,9 +60,24 @@
 
     <div class="rounded-2xl bg-white p-6 shadow-sm">
         <h2 class="text-lg font-semibold text-slate-900">Edit Profil</h2>
-        <form action="{{ route('profile.update') }}" method="POST" class="mt-6 space-y-5">
+        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="mt-6 space-y-5">
             @csrf
             @method('PUT')
+
+            <div>
+                <label for="avatar" class="mb-2 block text-sm font-medium text-slate-700">Foto Profil (Semua Pengguna)</label>
+                <input
+                    id="avatar"
+                    name="avatar"
+                    type="file"
+                    accept="image/*"
+                    class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:border-navy focus:ring-2 focus:ring-navy/20 @error('avatar') border-red-400 ring-red-100 focus:border-red-400 @enderror"
+                >
+                <p class="mt-1 text-xs text-slate-500">Format: JPG, PNG, WEBP (Maksimal 2MB).</p>
+                @error('avatar')
+                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
 
             <div>
                 <label for="name" class="mb-2 block text-sm font-medium text-slate-700">Nama Lengkap</label>

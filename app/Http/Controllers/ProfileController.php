@@ -22,7 +22,16 @@ class ProfileController extends Controller
     public function update(UpdateProfileRequest $request): RedirectResponse
     {
         $user = $request->user();
-        $user->fill($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->avatar_path)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar_path);
+            }
+            $data['avatar_path'] = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        $user->fill($data);
         $user->save();
 
         return redirect()->route('profile.show')->with('success', 'Profil berhasil diperbarui.');

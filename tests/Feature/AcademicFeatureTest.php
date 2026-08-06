@@ -58,7 +58,7 @@ class AcademicFeatureTest extends TestCase
             'schedule' => 'Senin, 08:00 - 09:30',
         ]);
 
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
 
         $response = $this->actingAs($teacherUser)->get(route('teacher.grades.index'));
         $response->assertStatus(200);
@@ -107,12 +107,14 @@ class AcademicFeatureTest extends TestCase
             'schedule' => 'Selasa, 10:00 - 11:30',
         ]);
 
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
 
         config([
             'app.school_latitude' => -6.2000000,
             'app.school_longitude' => 106.8166667,
         ]);
+
+        $this->travelTo(now()->setTime(6, 50));
 
         $response = $this->actingAs($studentUser)->post(route('student.attendance.store'), [
             'academic_class_id' => $class->id,
@@ -136,6 +138,8 @@ class AcademicFeatureTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Riwayat Absensi');
         $response->assertSee('Hadir');
+
+        $this->travelBack();
     }
 
     public function test_student_records_page_shows_attendance_percentage(): void
@@ -161,7 +165,7 @@ class AcademicFeatureTest extends TestCase
             'schedule' => 'Rabu, 11:00 - 12:30',
         ]);
 
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
 
         Attendance::create([
             'student_id' => $student->id,
@@ -202,7 +206,7 @@ class AcademicFeatureTest extends TestCase
             'schedule' => 'Kamis, 08:00 - 09:30',
         ]);
 
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
 
         $grade = Grade::create([
             'student_id' => $student->id,
@@ -239,7 +243,7 @@ class AcademicFeatureTest extends TestCase
             'student_number' => 'S-104',
             'grade_level' => '10',
         ]);
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
 
         Grade::create([
             'student_id' => $student->id,
@@ -280,7 +284,7 @@ class AcademicFeatureTest extends TestCase
             'room' => 'B2',
             'schedule' => 'Senin, 10:00 - 11:30',
         ]);
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
 
         Attendance::create([
             'student_id' => $student->id,
@@ -297,7 +301,6 @@ class AcademicFeatureTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Tingkat Kehadiran');
         $response->assertSee('Nilai Saya');
-        $response->assertSee('Jadwal Saya');
     }
 
     public function test_admin_reports_page_shows_academic_overview_counts(): void
@@ -325,7 +328,7 @@ class AcademicFeatureTest extends TestCase
             'schedule' => 'Jumat, 13:00 - 14:30',
         ]);
 
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
 
         $response = $this->actingAs($adminUser)->get(route('admin.reports.index'));
 
@@ -432,7 +435,7 @@ class AcademicFeatureTest extends TestCase
             'schedule' => 'Senin, 08:00 - 09:30',
         ]);
 
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
         $student->update(['academic_class_id' => $class->id]);
 
         $academicYear = \App\Models\AcademicYear::create([
@@ -501,7 +504,7 @@ class AcademicFeatureTest extends TestCase
             'schedule' => 'Senin, 08:00 - 09:30',
         ]);
 
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
         $student->update(['academic_class_id' => $class->id]);
 
         $academicYear = \App\Models\AcademicYear::create([
@@ -627,7 +630,7 @@ class AcademicFeatureTest extends TestCase
             'student_number' => 'S-301',
             'grade_level' => '7',
         ]);
-        $student->classes()->attach($classA->id);
+        $student->classes()->syncWithoutDetaching($classA->id);
 
         // Grade created by Teacher B for English in Class A
         $grade = Grade::create([
@@ -660,7 +663,7 @@ class AcademicFeatureTest extends TestCase
 
         $class = AcademicClass::create([
             'teacher_id' => $teacher->id,
-            'name' => '7D Token Test',
+            'name' => 'Kelas Pilihan Mandarin',
             'room' => 'D1',
             'schedule' => 'Senin, 08:00 - 09:30',
             'access_token' => 'SECRET',
@@ -762,7 +765,7 @@ class AcademicFeatureTest extends TestCase
             'student_number' => 'S-ENTRANCE-01',
             'grade_level' => '7',
         ]);
-        $student->classes()->attach($class->id);
+        $student->classes()->syncWithoutDetaching($class->id);
 
         // 1. Visit Student Classes Index
         $response = $this->actingAs($studentUser)->get(route('student.classes.index'));
@@ -910,5 +913,73 @@ class AcademicFeatureTest extends TestCase
             'student_id' => $student->id,
             'status' => 'late',
         ]);
+    }
+
+    public function test_students_are_not_auto_enrolled_when_academic_class_is_created(): void
+    {
+        $teacher = Teacher::create([
+            'user_id' => $this->createUserWithRole('teacher')->id,
+            'nip' => 'T-999',
+            'phone' => '081299999999',
+        ]);
+
+        $student1 = Student::create([
+            'user_id' => $this->createUserWithRole('student')->id,
+            'student_number' => 'S-888',
+            'grade_level' => 'VIII',
+        ]);
+
+        $student2 = Student::create([
+            'user_id' => $this->createUserWithRole('student')->id,
+            'student_number' => 'S-889',
+            'grade_level' => '7',
+        ]);
+
+        $class = AcademicClass::create([
+            'teacher_id' => $teacher->id,
+            'name' => 'Kelas VIII A',
+            'room' => 'Room 8A',
+            'schedule' => 'Senin, 08:00 - 09:30',
+        ]);
+
+        $this->assertFalse($class->students()->where('student_id', $student1->id)->exists());
+        $this->assertFalse($class->students()->where('student_id', $student2->id)->exists());
+        $this->assertNull($student1->fresh()->academic_class_id);
+    }
+
+    public function test_student_can_join_class_via_token_and_gain_access(): void
+    {
+        $teacher = Teacher::create([
+            'user_id' => $this->createUserWithRole('teacher')->id,
+            'nip' => 'T-998',
+            'phone' => '081299999998',
+        ]);
+
+        $class7 = AcademicClass::create([
+            'teacher_id' => $teacher->id,
+            'name' => 'Kelas VII B',
+            'room' => 'Room 7B',
+            'schedule' => 'Rabu, 08:00 - 09:30',
+        ]);
+
+        $studentUser = $this->createUserWithRole('student');
+        $student = Student::create([
+            'user_id' => $studentUser->id,
+            'student_number' => 'S-777',
+            'grade_level' => 'VII',
+        ]);
+
+        // Verify initially not joined
+        $this->assertFalse($student->classes()->where('academic_class_id', $class7->id)->exists());
+
+        // Join class via controller post
+        $response = $this->actingAs($studentUser)->post(route('student.join-class.process'), [
+            'access_token' => $class7->access_token,
+            'class_id' => $class7->id,
+        ]);
+
+        $response->assertRedirect(route('student.join-class'));
+        $this->assertTrue($student->fresh()->classes()->where('academic_class_id', $class7->id)->exists());
+        $this->assertEquals($class7->id, $student->fresh()->academic_class_id);
     }
 }

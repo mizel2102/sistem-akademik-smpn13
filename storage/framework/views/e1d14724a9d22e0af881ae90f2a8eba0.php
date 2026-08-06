@@ -120,39 +120,90 @@ unset($__errorArgs, $__bag); ?>
             </div>
 
             <div>
-                <label class="mb-2 block text-sm font-semibold text-slate-900" for="selfie">Foto Selfie</label>
-                <label for="selfie" class="group relative flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-slate-300 bg-slate-50 px-4 py-10 text-center transition hover:border-navy hover:bg-slate-100">
-                    <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553 2.276A2 2 0 0 1 21 14.118V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3.882a2 2 0 0 1 1.447-1.842L9 10m6 0V5a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v5" />
-                        </svg>
+                <label class="mb-2 block text-sm font-semibold text-slate-900">Foto Absensi (Smart Capture Kamera)</label>
+                
+                <input type="hidden" name="selfie_base64" x-model="selfieBase64">
+
+                <!-- Camera Container -->
+                <div class="relative overflow-hidden rounded-3xl border-2 border-slate-200 bg-slate-900 text-center shadow-inner">
+                    <!-- Live Camera Feed -->
+                    <div x-show="cameraActive && !captured" class="relative">
+                        <video x-ref="video" autoplay playsinline class="h-64 w-full object-cover transform -scale-x-100 rounded-3xl"></video>
+                        
+                        <!-- Camera Live Badge -->
+                        <div class="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
+                            <div class="h-2 w-2 rounded-full bg-red-500 animate-ping"></div>
+                            Kamera Berjalan (Live)
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-sm font-semibold text-slate-900">Unggah foto selfie</p>
-                        <p class="mt-1 text-xs text-slate-500">Klik atau tarik file di sini. Format gambar saja.</p>
+
+                    <!-- Snapshot Preview -->
+                    <div x-show="captured" class="relative" x-cloak>
+                        <img :src="selfiePreview" class="h-64 w-full object-cover rounded-3xl" alt="Hasil Foto Absensi">
+                        <div class="absolute top-3 left-3 rounded-full bg-emerald-600/90 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
+                            ✓ Foto Berhasil Dijepret
+                        </div>
                     </div>
-                </label>
-                <input
-                    type="file"
-                    id="selfie"
-                    name="selfie"
-                    accept="image/*"
-                    capture="user"
-                    class="sr-only"
-                >
+
+                    <!-- Camera Placeholder (Before Start) -->
+                    <div x-show="!cameraActive && !captured" class="flex flex-col items-center justify-center py-12 px-4 text-white">
+                        <div class="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-white backdrop-blur-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <p class="text-sm font-semibold text-white">Smart Capture Kamera Live</p>
+                        <p class="mt-1 text-xs text-slate-300">Klik tombol di bawah untuk mengaktifkan kamera depan.</p>
+                        <button type="button" @click="startCamera" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg transition hover:bg-blue-700">
+                            Aktifkan Kamera
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hidden Canvas for Snapshot Capture -->
+                <canvas x-ref="canvas" class="hidden"></canvas>
+
+                <!-- Camera Controls Buttons -->
+                <div class="mt-3 flex items-center justify-center gap-3">
+                    <template x-if="cameraActive && !captured">
+                        <button type="button" @click="takeSnapshot" class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-emerald-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                            </svg>
+                            Jepret Foto
+                        </button>
+                    </template>
+
+                    <template x-if="captured">
+                        <button type="button" @click="retakePhoto" class="inline-flex items-center gap-2 rounded-xl bg-slate-700 px-5 py-2.5 text-xs font-semibold text-white shadow-md transition hover:bg-slate-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                            </svg>
+                            Foto Ulang
+                        </button>
+                    </template>
+                </div>
+
                 <?php $__errorArgs = ['selfie'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                    <p class="mt-2 text-sm text-red-500"><?php echo e($message); ?></p>
-                <?php unset($message);
+$message = $__bag->first($__errorArgs[0]); ?> <p class="mt-2 text-sm text-red-500"><?php echo e($message); ?></p> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                <?php $__errorArgs = ['selfie_base64'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <p class="mt-2 text-sm text-red-500"><?php echo e($message); ?></p> <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
             </div>
 
-            <button type="submit" :disabled="!isWithinRange || loadingLocation" :class="{'opacity-50 cursor-not-allowed': !isWithinRange || loadingLocation}" class="w-full rounded-2xl bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-opacity-90">
+            <button type="submit" :disabled="!isWithinRange || loadingLocation || !captured" :class="{'opacity-50 cursor-not-allowed': !isWithinRange || loadingLocation || !captured}" class="w-full rounded-2xl bg-navy px-6 py-3.5 text-sm font-bold text-white transition hover:bg-opacity-90 shadow-lg">
                 Kirim Absensi
             </button>
         </form>
@@ -176,6 +227,11 @@ unset($__errorArgs, $__bag); ?>
             isLate: false,
             entryTime: "<?php echo e(config('app.school_entry_time', '06:45')); ?>",
             lateTolerance: parseInt("<?php echo e(config('app.school_late_tolerance_minutes', 15)); ?>"),
+            cameraActive: false,
+            captured: false,
+            selfieBase64: '',
+            selfiePreview: '',
+            mediaStream: null,
 
             init() {
                 // Set to current local time in Y-m-d H:i:s format for database
@@ -201,6 +257,55 @@ unset($__errorArgs, $__bag); ?>
                 }
 
                 this.getLocation();
+            },
+
+            async startCamera() {
+                try {
+                    this.mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }
+                    });
+                    if (this.$refs.video) {
+                        this.$refs.video.srcObject = this.mediaStream;
+                    }
+                    this.cameraActive = true;
+                } catch (err) {
+                    alert('Gagal mengakses kamera: ' + err.message + '. Pastikan izin akses kamera telah diberikan di browser.');
+                }
+            },
+
+            takeSnapshot() {
+                const video = this.$refs.video;
+                const canvas = this.$refs.canvas;
+                if (!video || !canvas) return;
+
+                canvas.width = video.videoWidth || 640;
+                canvas.height = video.videoHeight || 480;
+                const ctx = canvas.getContext('2d');
+
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                this.selfiePreview = canvas.toDataURL('image/jpeg', 0.85);
+                this.selfieBase64 = this.selfiePreview;
+                this.captured = true;
+
+                this.stopCamera();
+            },
+
+            retakePhoto() {
+                this.captured = false;
+                this.selfiePreview = '';
+                this.selfieBase64 = '';
+                this.startCamera();
+            },
+
+            stopCamera() {
+                if (this.mediaStream) {
+                    this.mediaStream.getTracks().forEach(track => track.stop());
+                    this.mediaStream = null;
+                }
+                this.cameraActive = false;
             },
 
             getLocation() {

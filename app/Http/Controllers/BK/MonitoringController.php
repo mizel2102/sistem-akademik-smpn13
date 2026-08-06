@@ -21,6 +21,7 @@ class MonitoringController extends Controller
         $minAlpha = (int) $request->input('min_alpha', 3);
         $classId = $request->input('academic_class_id');
 
+        $classes = \App\Models\AcademicClass::orderBy('name')->get();
         $semesters = Semester::query()->latest()->get();
 
         $query = Student::with(['user', 'academicClass'])
@@ -40,11 +41,11 @@ class MonitoringController extends Controller
         $students = $query->paginate(20)->withQueryString();
 
         // Ambil data dari service
-        $weeks = $dashboardService->getAlphaTrendPerWeek($semesterId);
-        $spDistribution = $dashboardService->getActiveSpDistribution();
+        $weeks = $dashboardService->getAlphaTrendPerWeek($semesterId, $classId);
+        $spDistribution = $dashboardService->getActiveSpDistribution($classId);
 
         return view('bk.monitoring.alpha', compact(
-            'students', 'semesters', 'semesterId', 'minAlpha', 'classId', 'weeks', 'spDistribution',
+            'students', 'semesters', 'semesterId', 'minAlpha', 'classId', 'weeks', 'spDistribution', 'classes'
         ));
     }
 

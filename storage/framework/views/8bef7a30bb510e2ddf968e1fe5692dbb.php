@@ -83,22 +83,31 @@
                 <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Grafik Nilai per Mata Pelajaran</p>
                 <p class="mt-1 text-sm text-slate-600">Menampilkan rata-rata nilai untuk setiap mata pelajaran.</p>
             </div>
-            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Total mapel: <?php echo e($grades->groupBy(fn($grade) => $grade->subject?->name ?? 'Tanpa Mapel')->count()); ?></span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Total mapel: <?php echo e(($allGradesForChart ?? $grades)->groupBy(fn($grade) => $grade->subject?->name ?? 'Tanpa Mapel')->count()); ?></span>
         </div>
 
         <div class="mt-6 space-y-4">
-            <?php $__currentLoopData = $grades->groupBy(fn($grade) => $grade->subject?->name ?? 'Tanpa Mapel'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subject => $subjectGrades): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php $__currentLoopData = ($allGradesForChart ?? $grades)->groupBy(fn($grade) => $grade->subject?->name ?? 'Tanpa Mapel'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $subject => $subjectGrades): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php
+                    $firstGrade = $subjectGrades->first();
+                    $subjectId = $firstGrade?->subject_id;
                     $average = $subjectGrades->avg('score') ?? 0;
                     $width = min(max($average, 5), 100);
                 ?>
                 <div>
                     <div class="flex items-center justify-between text-sm text-slate-700">
-                        <span class="font-medium text-slate-900"><?php echo e($subject); ?></span>
+                        <?php if($subjectId): ?>
+                            <a href="<?php echo e(route('student.records.index', ['subject_id' => $subjectId, 'semester_id' => request('semester_id')])); ?>" class="font-semibold text-navy hover:underline">
+                                <?php echo e($subject); ?>
+
+                            </a>
+                        <?php else: ?>
+                            <span class="font-medium text-slate-900"><?php echo e($subject); ?></span>
+                        <?php endif; ?>
                         <span class="text-slate-600"><?php echo e(number_format($average, 1)); ?></span>
                     </div>
                     <div class="mt-2 h-3 overflow-hidden rounded-full bg-slate-100">
-                        <div class="h-full rounded-full bg-navy" style="width: <?php echo e($width); ?>%;"></div>
+                        <div class="h-full rounded-full bg-navy" <?php echo "style=\"width: {$width}%;\""; ?>></div>
                     </div>
                 </div>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -139,7 +148,17 @@
                         ?>
                         <tr class="border-t border-slate-200 <?php echo e($loop->even ? 'bg-slate-50' : ''); ?> hover:bg-slate-100">
                             <td class="px-6 py-4 text-sm font-medium text-slate-900"><?php echo e($i + 1); ?></td>
-                            <td class="px-6 py-4 text-sm text-slate-900"><?php echo e($grade->subject?->name ?? '-'); ?></td>
+                            <td class="px-6 py-4 text-sm text-slate-900 font-semibold">
+                                <?php if($grade->subject_id): ?>
+                                    <a href="<?php echo e(route('student.records.index', ['subject_id' => $grade->subject_id, 'semester_id' => request('semester_id')])); ?>" class="text-navy hover:underline">
+                                        <?php echo e($grade->subject?->name ?? '-'); ?>
+
+                                    </a>
+                                <?php else: ?>
+                                    <?php echo e($grade->subject?->name ?? '-'); ?>
+
+                                <?php endif; ?>
+                            </td>
                             <td class="px-6 py-4 text-sm text-slate-900"><?php echo e($grade->semester?->name ?? '-'); ?></td>
                             <td class="px-6 py-4 text-sm text-slate-900"><?php echo e($grade->assignment ?? '-'); ?></td>
                             <td class="px-6 py-4 text-2xl font-bold <?php echo e($scoreClass); ?>"><?php echo e($score); ?></td>

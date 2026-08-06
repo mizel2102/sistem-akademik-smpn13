@@ -17,12 +17,21 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * @mixin \Spatie\Permission\Traits\HasRoles
  */
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'avatar_path'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        if ($this->avatar_path) {
+            return \Illuminate\Support\Facades\Storage::disk('public')->url($this->avatar_path);
+        }
+
+        return null;
+    }
 
     /**
      * Get the teacher profile relation.

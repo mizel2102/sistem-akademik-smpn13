@@ -12,15 +12,27 @@ class ServicesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_notification_service_returns_notifications_array(): void
+    public function test_notification_service_returns_notifications_collection(): void
     {
         $service = new NotificationService();
 
         $notifications = $service->getNotifications();
 
-        $this->assertIsArray($notifications);
-        $this->assertCount(3, $notifications);
-        $this->assertSame('Jadwal Ujian Akhir', $notifications[0]['title']);
+        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $notifications);
+        $this->assertCount(0, $notifications);
+
+        // With a user that has notifications
+        $user = \App\Models\User::factory()->create();
+        $user->notifications()->create([
+            'id' => (string) \Illuminate\Support\Str::uuid(),
+            'type' => 'test_type',
+            'data' => ['message' => 'test_data'],
+        ]);
+
+        $userNotifications = $service->getNotifications($user);
+        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $userNotifications);
+        $this->assertCount(1, $userNotifications);
+        $this->assertSame('test_type', $userNotifications[0]->type);
     }
 
     public function test_settings_service_returns_default_settings_when_session_is_empty(): void

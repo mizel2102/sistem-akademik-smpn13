@@ -28,15 +28,18 @@
                 <?php echo method_field('PUT'); ?>
             <?php endif; ?>
 
-            <!-- 1. Akun Pengguna -->
+            <!-- 1. Data Akun Siswa -->
             <div>
-                <label for="user_id" class="mb-2 block text-sm font-semibold text-slate-900">
-                    Akun Pengguna <span class="text-red-500">*</span>
+                <label for="name" class="mb-2 block text-sm font-semibold text-slate-900">
+                    Nama Lengkap Siswa <span class="text-red-500">*</span>
                 </label>
-                <select
-                    id="user_id"
-                    name="user_id"
-                    class="w-full rounded-xl border-2 border-slate-200 px-4 py-2.5 text-sm transition focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20 <?php $__errorArgs = ['user_id'];
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="<?php echo e(old('name', $student->user->name ?? '')); ?>"
+                    placeholder="Contoh: ABDUL AZIZ"
+                    class="w-full rounded-xl border-2 border-slate-200 px-4 py-2.5 text-sm transition focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20 <?php $__errorArgs = ['name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -46,17 +49,72 @@ endif;
 unset($__errorArgs, $__bag); ?>"
                     required
                 >
-                    <option value="">-- Pilih Pengguna --</option>
-                    <?php $__currentLoopData = $users ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <option
-                            value="<?php echo e($user->id); ?>"
-                            <?php if(old('user_id') === $user->id || (isset($student) && $student->user_id === $user->id)): ?> selected <?php endif; ?>
-                        >
-                            <?php echo e($user->name); ?> (<?php echo e($user->email); ?>)
-                        </option>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </select>
-                <?php $__errorArgs = ['user_id'];
+                <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <p class="mt-1 text-xs text-red-500"><?php echo e($message); ?></p>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+
+            <div>
+                <label for="email" class="mb-2 block text-sm font-semibold text-slate-900">
+                    Alamat Email <span class="text-red-500">*</span>
+                </label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="<?php echo e(old('email', $student->user->email ?? '')); ?>"
+                    placeholder="siswa@smpn13.sch.id"
+                    class="w-full rounded-xl border-2 border-slate-200 px-4 py-2.5 text-sm transition focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20 <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                    required
+                >
+                <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <p class="mt-1 text-xs text-red-500"><?php echo e($message); ?></p>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+
+            <div>
+                <label for="password" class="mb-2 block text-sm font-semibold text-slate-900">
+                    Password <?php echo e(isset($student) ? '(Biarkan kosong jika tidak diubah)' : '*'); ?>
+
+                </label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Min. 8 Karakter"
+                    class="w-full rounded-xl border-2 border-slate-200 px-4 py-2.5 text-sm transition focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20 <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                    <?php echo e(isset($student) ? '' : 'required'); ?>
+
+                >
+                <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

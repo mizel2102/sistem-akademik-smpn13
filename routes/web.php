@@ -58,6 +58,8 @@ Route::post('logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
+Route::get('berita', fn () => redirect()->route('welcome'))->name('berita.index');
+
 Route::middleware('auth')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -180,7 +182,6 @@ Route::middleware('role:guru-bk')->prefix('bk')->name('bk.')->group(function () 
         Route::get('classes', [StudentAcademicController::class, 'classes'])->name('classes.index');
         Route::get('classes/{id}', [StudentAcademicController::class, 'showClass'])->name('classes.show');
         Route::get('records', [StudentAcademicController::class, 'records'])->name('records.index');
-        Route::get('schedule', [StudentAcademicController::class, 'schedule'])->name('schedule.index');
         Route::get('join-class', [StudentAcademicController::class, 'joinClassForm'])->name('join-class');
         Route::post('join-class', [StudentAcademicController::class, 'processJoinClass'])->name('join-class.process');
         Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');

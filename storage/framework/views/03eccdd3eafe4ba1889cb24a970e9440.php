@@ -410,6 +410,33 @@
 <?php elseif($role === 'student'): ?>
     <!-- Student Dashboard (Also adapted to TailAdmin Style) -->
     <div class="space-y-6">
+        <?php if($activeSp): ?>
+            <div class="rounded-2xl border border-rose-200 bg-rose-50 p-6 shadow-sm flex items-start gap-4 animate-pulse">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-rose-100 text-rose-600">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <h3 class="text-lg font-bold text-rose-800">⚠️ PEMBERITAHUAN SURAT PERNYATAAN AKTIF (<?php echo e($activeSp->type); ?>)</h3>
+                        <span class="text-xs font-semibold bg-rose-200 text-rose-800 px-2.5 py-0.5 rounded-full">Status: Aktif</span>
+                    </div>
+                    <p class="mt-1 text-sm text-rose-700">
+                        Anda telah menerima **<?php echo e($activeSp->type); ?>** pada tanggal **<?php echo e(\Carbon\Carbon::parse($activeSp->issued_at)->translatedFormat('d F Y')); ?>**.
+                    </p>
+                    <div class="mt-3 text-sm text-rose-800 bg-white/70 p-4 rounded-xl border border-rose-100 shadow-sm">
+                        <span class="font-bold block text-rose-900 mb-1">Alasan Penerbitan:</span>
+                        <p class="italic text-slate-700"><?php echo e($activeSp->reason); ?></p>
+                    </div>
+                    <div class="mt-4 flex items-center gap-3">
+                        <p class="text-sm font-semibold text-rose-900">
+                            📢 Silakan segera menghubungi Guru Bimbingan Konseling (BK) Anda untuk proses pembinaan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6 2xl:gap-7.5">
             <a href="<?php echo e(route('student.attendance.history')); ?>" class="group block rounded-xl border border-slate-200 bg-white px-7 py-6 shadow-sm hover:border-blue-500 hover:shadow-md transition">
                 <div class="flex h-11.5 w-11.5 items-center justify-center rounded-full bg-slate-100 text-blue-600 mb-4 w-12 h-12 group-hover:bg-blue-600 group-hover:text-white transition">
@@ -468,15 +495,6 @@
                         <div>
                             <p class="font-medium text-slate-800 group-hover:text-amber-700">Absensi Hari Ini</p>
                             <p class="text-xs text-slate-500">Cek atau catat kehadiran</p>
-                        </div>
-                    </a>
-                    <a href="<?php echo e(route('student.schedule.index')); ?>" class="group flex items-center gap-4 rounded-lg border border-slate-200 p-3 hover:border-emerald-500 hover:bg-emerald-50 transition">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-emerald-100 text-emerald-600">
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect></svg>
-                        </div>
-                        <div>
-                            <p class="font-medium text-slate-800 group-hover:text-emerald-700">Jadwal Saya</p>
-                            <p class="text-xs text-slate-500">Lihat jadwal pelajaran</p>
                         </div>
                     </a>
                 </div>

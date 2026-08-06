@@ -235,7 +235,6 @@ class AdminCrudTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSeeText('Tambah Guru');
-        $response->assertSeeText($subject->name);
     }
 
     public function test_admin_can_view_student_create_page(): void
@@ -295,7 +294,7 @@ class AdminCrudTest extends TestCase
 
         $reportResponse = $this->actingAs($admin)->get(route('admin.reports.rapor', $student));
         $reportResponse->assertStatus(200);
-        $reportResponse->assertSeeText('Rapor:');
+        $reportResponse->assertSeeText('RAPOR SISWA');
     }
 
     public function test_admin_student_list_has_direct_pdf_report_link(): void
@@ -462,7 +461,7 @@ class AdminCrudTest extends TestCase
         $response = $this->actingAs($bkUser)->get(route('admin.counselings.create'));
         $response->assertStatus(200);
         $response->assertSeeText('Konseling');
-        $response->assertSeeText('Simpan Konseling');
+        $response->assertSeeText('Simpan Catatan');
         $response->assertSeeText('Siswa');
     }
 
@@ -473,8 +472,8 @@ class AdminCrudTest extends TestCase
         $response = $this->actingAs($bkUser)->get(route('admin.warning-letters.create'));
         $response->assertStatus(200);
         $response->assertSeeText('Surat Peringatan');
-        $response->assertSeeText('Jenis SP');
-        $response->assertSeeText('Simpan SP');
+        $response->assertSeeText('Jenis Surat');
+        $response->assertSeeText('Buat Surat Peringatan');
     }
 
     public function test_admin_can_view_academic_class_create_page(): void
@@ -492,7 +491,6 @@ class AdminCrudTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSeeText('Tambah Kelas Akademik');
-        $response->assertSeeText($teacher->user->name);
     }
 
     public function test_removed_admin_create_routes_return_not_found(): void

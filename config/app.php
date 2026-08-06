@@ -127,5 +127,6 @@ return [
     'school_longitude' => env('SCHOOL_LONGITUDE', '109.42797746483276'),
     'school_entry_time' => env('SCHOOL_ENTRY_TIME', '06:45'),
     'school_late_tolerance_minutes' => (int) env('SCHOOL_LATE_TOLERANCE_MINUTES', 15),
+    'school_max_distance_meters' => (int) env('SCHOOL_MAX_DISTANCE_METERS', 100),
 
 ];

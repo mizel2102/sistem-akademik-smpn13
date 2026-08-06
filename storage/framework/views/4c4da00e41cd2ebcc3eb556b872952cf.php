@@ -31,10 +31,14 @@
         <div x-data="{ userOpen: false }" class="relative">
             <button @click="userOpen = !userOpen"
                     class="flex items-center gap-2 rounded-lg p-1.5 hover:bg-slate-100 transition-colors">
-                <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
-                    <?php echo e(optional(auth()->user())->name ? substr(auth()->user()->name, 0, 2) : 'U'); ?>
+                <?php if(auth()->user()?->avatar_url): ?>
+                    <img src="<?php echo e(auth()->user()->avatar_url); ?>" alt="<?php echo e(auth()->user()->name); ?>" class="h-8 w-8 rounded-full object-cover ring-2 ring-blue-600">
+                <?php else: ?>
+                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
+                        <?php echo e(optional(auth()->user())->name ? substr(auth()->user()->name, 0, 2) : 'U'); ?>
 
-                </div>
+                    </div>
+                <?php endif; ?>
                 <span class="hidden text-sm font-medium text-slate-700 sm:inline"><?php echo e(optional(auth()->user())->name ?? 'Guest'); ?></span>
                 <svg class="h-4 w-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>

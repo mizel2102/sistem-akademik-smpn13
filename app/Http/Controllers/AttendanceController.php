@@ -107,8 +107,9 @@ class AttendanceController extends Controller
             (float) $schoolLng
         );
 
-        if ($calculatedDistance > 20) {
-            return redirect()->back()->withErrors(['distance' => 'Jarak Anda (' . round($calculatedDistance) . 'm) melebihi batas maksimal 20 meter dari sekolah.'])->withInput();
+        $maxDistance = (int) config('app.school_max_distance_meters', 50);
+        if ($calculatedDistance > $maxDistance) {
+            return redirect()->back()->withErrors(['distance' => 'Jarak Anda (' . round($calculatedDistance) . 'm) melebihi batas maksimal ' . $maxDistance . ' meter dari sekolah.'])->withInput();
         }
 
         $data = $request->validated();
@@ -136,6 +137,13 @@ class AttendanceController extends Controller
 
         if ($request->hasFile('selfie')) {
             $data['selfie_path'] = $request->file('selfie')->store('attendances', 'public');
+        } elseif ($request->filled('selfie_base64')) {
+            $imageData = $request->input('selfie_base64');
+            $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $fileName = 'attendances/' . \Illuminate\Support\Str::random(40) . '.jpg';
+            \Illuminate\Support\Facades\Storage::disk('public')->put($fileName, base64_decode($imageData));
+            $data['selfie_path'] = $fileName;
         }
 
         $attendanceService->createAttendance($data);

@@ -58,6 +58,63 @@
         </form>
     </div>
 
+    <!-- Subject Quick Cards -->
+    <div class="space-y-4">
+        <h2 class="text-lg font-bold text-navy">Mata Pelajaran Anda</h2>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            @php
+                $groupedChartGrades = $allGradesForChart->groupBy('subject_id');
+            @endphp
+            @forelse($groupedChartGrades as $subId => $subGrades)
+                @php
+                    $subjectModel = $subGrades->first()?->subject;
+                    $subjectName = $subjectModel?->name ?? 'Tanpa Mapel';
+                    $avgScore = $subGrades->avg('score') ?? 0;
+                    $isActive = request('subject_id') == $subId;
+                @endphp
+                @if($subId)
+                    <a href="{{ route('student.records.index', ['subject_id' => $subId, 'semester_id' => request('semester_id')]) }}" 
+                       class="group block rounded-2xl border-2 p-5 transition shadow-sm bg-white {{ $isActive ? 'border-navy bg-navy/5' : 'border-transparent hover:border-navy/30' }}">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 {{ $isActive ? 'text-navy' : '' }}">{{ $subjectModel?->code ?? 'MAPEL' }}</p>
+                                <h3 class="mt-1 text-sm font-bold text-slate-800 {{ $isActive ? 'text-navy' : 'group-hover:text-navy' }}">{{ $subjectName }}</h3>
+                            </div>
+                            <span class="rounded-full px-2 py-0.5 text-[10px] font-bold {{ $isActive ? 'bg-navy text-white' : 'bg-slate-100 text-slate-600' }}">
+                                {{ $subGrades->count() }} Nilai
+                            </span>
+                        </div>
+                        <div class="mt-4 flex items-end justify-between">
+                            <span class="text-xs text-slate-400">Rata-rata</span>
+                            <span class="text-xl font-extrabold text-navy">{{ number_format($avgScore, 1) }}</span>
+                        </div>
+                    </a>
+                @endif
+            @empty
+                <div class="col-span-full rounded-2xl bg-white p-6 text-center text-slate-500 border border-slate-100">
+                    Tidak ada data mata pelajaran pada semester ini.
+                </div>
+            @endforelse
+        </div>
+    </div>
+
+    @if(request('subject_id'))
+        @php
+            $activeSubject = $subjects->firstWhere('id', request('subject_id'));
+        @endphp
+        @if($activeSubject)
+            <div class="flex items-center justify-between rounded-xl bg-navy/5 px-4 py-3 text-sm text-navy font-semibold border border-navy/20">
+                <div class="flex items-center gap-2">
+                    <span class="flex h-2 w-2 rounded-full bg-navy animate-pulse"></span>
+                    <span>Menampilkan Nilai Mata Pelajaran: <strong class="text-navy font-bold">{{ $activeSubject->name }}</strong></span>
+                </div>
+                <a href="{{ route('student.records.index', ['semester_id' => request('semester_id')]) }}" class="inline-flex items-center justify-center rounded-lg bg-navy px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy/80 transition-colors">
+                    Hapus Filter
+                </a>
+            </div>
+        @endif
+    @endif
+
     <!-- Summary Stats Row -->
     <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div class="rounded-2xl bg-white p-6 shadow-sm">
@@ -83,18 +140,26 @@
                 <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Grafik Nilai per Mata Pelajaran</p>
                 <p class="mt-1 text-sm text-slate-600">Menampilkan rata-rata nilai untuk setiap mata pelajaran.</p>
             </div>
-            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Total mapel: {{ $grades->groupBy(fn($grade) => $grade->subject?->name ?? 'Tanpa Mapel')->count() }}</span>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Total mapel: {{ ($allGradesForChart ?? $grades)->groupBy(fn($grade) => $grade->subject?->name ?? 'Tanpa Mapel')->count() }}</span>
         </div>
 
         <div class="mt-6 space-y-4">
-            @foreach($grades->groupBy(fn($grade) => $grade->subject?->name ?? 'Tanpa Mapel') as $subject => $subjectGrades)
+            @foreach(($allGradesForChart ?? $grades)->groupBy(fn($grade) => $grade->subject?->name ?? 'Tanpa Mapel') as $subject => $subjectGrades)
                 @php
+                    $firstGrade = $subjectGrades->first();
+                    $subjectId = $firstGrade?->subject_id;
                     $average = $subjectGrades->avg('score') ?? 0;
                     $width = min(max($average, 5), 100);
                 @endphp
                 <div>
                     <div class="flex items-center justify-between text-sm text-slate-700">
-                        <span class="font-medium text-slate-900">{{ $subject }}</span>
+                        @if($subjectId)
+                            <a href="{{ route('student.records.index', ['subject_id' => $subjectId, 'semester_id' => request('semester_id')]) }}" class="font-semibold text-navy hover:underline">
+                                {{ $subject }}
+                            </a>
+                        @else
+                            <span class="font-medium text-slate-900">{{ $subject }}</span>
+                        @endif
                         <span class="text-slate-600">{{ number_format($average, 1) }}</span>
                     </div>
                     <div class="mt-2 h-3 overflow-hidden rounded-full bg-slate-100">
@@ -139,7 +204,15 @@
                         @endphp
                         <tr class="border-t border-slate-200 {{ $loop->even ? 'bg-slate-50' : '' }} hover:bg-slate-100">
                             <td class="px-6 py-4 text-sm font-medium text-slate-900">{{ $i + 1 }}</td>
-                            <td class="px-6 py-4 text-sm text-slate-900">{{ $grade->subject?->name ?? '-' }}</td>
+                            <td class="px-6 py-4 text-sm text-slate-900 font-semibold">
+                                @if($grade->subject_id)
+                                    <a href="{{ route('student.records.index', ['subject_id' => $grade->subject_id, 'semester_id' => request('semester_id')]) }}" class="text-navy hover:underline">
+                                        {{ $grade->subject?->name ?? '-' }}
+                                    </a>
+                                @else
+                                    {{ $grade->subject?->name ?? '-' }}
+                                @endif
+                            </td>
                             <td class="px-6 py-4 text-sm text-slate-900">{{ $grade->semester?->name ?? '-' }}</td>
                             <td class="px-6 py-4 text-sm text-slate-900">{{ $grade->assignment ?? '-' }}</td>
                             <td class="px-6 py-4 text-2xl font-bold {{ $scoreClass }}">{{ $score }}</td>

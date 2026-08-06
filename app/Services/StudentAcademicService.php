@@ -14,10 +14,10 @@ class StudentAcademicService
     public function getRecordsForStudent(Student $student): array
     {
         $records = $student->grades()
-            ->with('academicClass')
+            ->with(['academicClass', 'subject'])
             ->get()
             ->map(fn (Grade $grade) => [
-                'subject' => $grade->academicClass?->name,
+                'subject' => $grade->subject?->name ?? $grade->academicClass?->name ?? 'Mata Pelajaran',
                 'grade' => $grade->score,
                 'status' => $grade->status,
             ])
@@ -41,21 +41,6 @@ class StudentAcademicService
         return round($presentCount / $attendanceCount * 100) . '%';
     }
 
-    public function getScheduleForStudent(Student $student): Collection
-    {
-        $classIds = $student->classes()->pluck('academic_classes.id')->all();
-
-        if (empty($classIds)) {
-            return collect();
-        }
-
-        return Schedule::with(['subject', 'teacher.user', 'academicClass'])
-            ->whereIn('academic_class_id', $classIds)
-            ->orderBy('day')
-            ->orderBy('start_time')
-            ->get();
-    }
-
     public function getClassesForStudent(Student $student): Collection
     {
         $studentGradeLevel = TeacherAcademicService::extractGradeLevel($student->grade_level ?? '') ?? $student->grade_level;
@@ -73,9 +58,32 @@ class StudentAcademicService
             ->values();
     }
 
+    public function getAvailableClassesForStudent(Student $student): Collection
+    {
+        $studentGradeLevel = TeacherAcademicService::extractGradeLevel($student->grade_level ?? '') ?? $student->grade_level;
+
+        if (! $studentGradeLevel) {
+            return collect();
+        }
+
+        return AcademicClass::with(['teacher.user', 'students'])
+            ->get()
+            ->filter(function (AcademicClass $class) use ($studentGradeLevel) {
+                $classGradeLevel = TeacherAcademicService::extractGradeLevel($class->name);
+                return $classGradeLevel === $studentGradeLevel;
+            })
+            ->values();
+    }
+
     public function getClassDetailsForStudent(Student $student, int $classId): array
     {
         $studentGradeLevel = TeacherAcademicService::extractGradeLevel($student->grade_level ?? '') ?? $student->grade_level;
+
+        // Check if the student is enrolled in this class
+        $isEnrolled = $student->classes()->where('academic_classes.id', $classId)->exists();
+        if (! $isEnrolled) {
+            abort(403, "Akses Ditolak: Anda belum bergabung dengan kelas ini. Silakan masukkan token kelas terlebih dahulu.");
+        }
 
         $class = $student->classes()
             ->with(['teacher.user', 'students.user', 'schedules.subject', 'schedules.teacher.user'])
@@ -95,7 +103,7 @@ class StudentAcademicService
 
         $myAttendances = $student->attendances()
             ->where('academic_class_id', $classId)
-            ->orderBy('date', 'desc')
+            ->orderBy('attendance_time', 'desc')
             ->get();
 
         return [

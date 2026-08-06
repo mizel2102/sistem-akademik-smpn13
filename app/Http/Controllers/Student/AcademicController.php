@@ -25,27 +25,26 @@ class AcademicController extends Controller
         $attendanceRate = $student ? $this->service->getAttendanceRateForStudent($student) : 'N/A';
         $records = $student ? $this->service->getRecordsForStudent($student) : [];
 
-        $grades = $student
+        $gradesQuery = $student
             ? $student->grades()
                 ->with(['subject', 'semester'])
                 ->when($request->filled('semester_id'), fn ($query) => $query->where('semester_id', $request->semester_id))
-                ->when($request->filled('subject_id'), fn ($query) => $query->where('subject_id', $request->subject_id))
+            : null;
+
+        $allGradesForChart = $gradesQuery ? (clone $gradesQuery)->get() : collect();
+
+        $grades = $gradesQuery
+            ? $gradesQuery->when($request->filled('subject_id'), fn ($query) => $query->where('subject_id', $request->subject_id))
                 ->get()
             : collect();
 
         $subjects = Subject::query()->orderBy('name', 'asc')->get();
         $semesters = Semester::query()->orderBy('name', 'asc')->get();
 
-        return view('student.records', compact('records', 'attendanceRate', 'grades', 'subjects', 'semesters'));
+        return view('student.records', compact('records', 'attendanceRate', 'grades', 'allGradesForChart', 'subjects', 'semesters'));
     }
 
-    public function schedule(): View
-    {
-        $student = Auth::user()->student;
-        $schedules = $student ? $this->service->getScheduleForStudent($student) : collect();
 
-        return view('student.schedule', compact('schedules'));
-    }
 
     public function joinClassForm(): View
     {
@@ -59,6 +58,7 @@ class AcademicController extends Controller
     {
         $request->validate([
             'access_token' => 'required|string|max:20',
+            'class_id' => 'nullable|integer|exists:academic_classes,id',
         ], [
             'access_token.required' => 'Token Akses Kelas wajib diisi.',
         ]);
@@ -69,10 +69,15 @@ class AcademicController extends Controller
         }
 
         $token = strtoupper(trim($request->access_token));
-        $class = \App\Models\AcademicClass::query()->where('access_token', '=', $token)->first();
+        
+        $query = \App\Models\AcademicClass::query()->where('access_token', '=', $token);
+        if ($request->filled('class_id')) {
+            $query->where('id', $request->class_id);
+        }
+        $class = $query->first();
 
         if (! $class) {
-            return back()->withInput()->withErrors(['access_token' => 'Kode Token Akses Kelas tidak valid atau tidak ditemukan.']);
+            return back()->withInput()->withErrors(['access_token' => 'Kode Token Akses Kelas tidak valid atau salah untuk kelas ini.']);
         }
 
         $classGradeLevel = \App\Services\TeacherAcademicService::extractGradeLevel($class->name);
@@ -95,9 +100,10 @@ class AcademicController extends Controller
     public function classes(): View
     {
         $student = Auth::user()->student;
-        $myClasses = $student ? $this->service->getClassesForStudent($student) : collect();
+        $allClasses = $student ? $this->service->getAvailableClassesForStudent($student) : collect();
+        $enrolledClassIds = $student ? $student->classes()->pluck('academic_classes.id')->toArray() : [];
 
-        return view('student.classes.index', compact('myClasses'));
+        return view('student.classes.index', compact('allClasses', 'enrolledClassIds'));
     }
 
     public function showClass(string $id): View

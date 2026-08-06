@@ -40,7 +40,11 @@ class AcademicClassService
             $data['teacher_id'] = $teacher->id;
         }
 
-        return AcademicClass::create($data);
+        $class = AcademicClass::create($data);
+
+        app(TeacherAcademicService::class)->autoEnrollStudentsByGradeLevel($class);
+
+        return $class;
     }
 
     public function update(AcademicClass $academicClass, array $data): AcademicClass

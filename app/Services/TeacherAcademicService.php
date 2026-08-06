@@ -27,13 +27,15 @@ class TeacherAcademicService
 
     public function getGradebookForTeacher(Teacher $teacher): array
     {
+        $subjectId = $teacher->subject_id ?? \App\Models\Subject::query()->first()?->id;
+
         return Grade::query()
             ->with(['student.user', 'academicClass'])
             ->where(function (Builder $query) use ($teacher) {
                 $query->whereHas('academicClass.schedules', fn (Builder $q) => $q->where('teacher_id', $teacher->id))
                       ->orWhereHas('academicClass', fn (Builder $q) => $q->where('teacher_id', $teacher->id));
             })
-            ->where('subject_id', $teacher->subject_id)
+            ->where('subject_id', $subjectId)
             ->get()
             ->map(fn (Grade $grade) => [
                 'id' => $grade->id,
@@ -101,6 +103,40 @@ class TeacherAcademicService
 
         if ($students->isNotEmpty()) {
             $class->students()->syncWithoutDetaching($students->pluck('id')->all());
+
+            foreach ($students as $student) {
+                if (empty($student->academic_class_id)) {
+                    $student->academic_class_id = $class->id;
+                    $student->saveQuietly();
+                }
+            }
+        }
+    }
+
+    public static function autoEnrollStudentInClasses(Student $student): void
+    {
+        $studentGrade = static::extractGradeLevel($student->grade_level ?? '');
+        if (! $studentGrade) {
+            return;
+        }
+
+        $classes = AcademicClass::all();
+        $classIdsToEnroll = [];
+
+        foreach ($classes as $class) {
+            $classGrade = static::extractGradeLevel($class->name);
+            if ($classGrade === $studentGrade) {
+                $classIdsToEnroll[] = $class->id;
+            }
+        }
+
+        if (! empty($classIdsToEnroll)) {
+            $student->classes()->syncWithoutDetaching($classIdsToEnroll);
+
+            if (empty($student->academic_class_id) || ! in_array($student->academic_class_id, $classIdsToEnroll, true)) {
+                $student->academic_class_id = $classIdsToEnroll[0];
+                $student->saveQuietly();
+            }
         }
     }
 
@@ -188,13 +224,18 @@ class TeacherAcademicService
             throw new \RuntimeException('Student is not enrolled in this class.');
         }
 
-        $semesterId = Semester::active()?->id;
+        $semesterId = Semester::active()?->id ?? Semester::query()->first()?->id;
+
+        $subjectId = $teacher->subject_id;
+        if (! $subjectId) {
+            $subjectId = \App\Models\Subject::query()->first()?->id;
+        }
 
         /** @var Grade $grade */
         $grade = Grade::query()->create([
             'student_id' => $data['student_id'],
             'academic_class_id' => $class->id,
-            'subject_id' => $teacher->subject_id,
+            'subject_id' => $subjectId,
             'semester_id' => $semesterId,
             'assignment' => $data['assignment'],
             'score' => $data['score'],
@@ -206,9 +247,11 @@ class TeacherAcademicService
 
     public function deleteGradeForTeacher(Teacher $teacher, int $gradeId): bool
     {
+        $subjectId = $teacher->subject_id ?? \App\Models\Subject::query()->first()?->id;
+
         $grade = Grade::query()
             ->where('id', $gradeId)
-            ->where('subject_id', $teacher->subject_id)
+            ->where('subject_id', $subjectId)
             ->where(function (Builder $query) use ($teacher) {
                 $query->whereHas('academicClass.schedules', fn (Builder $q) => $q->where('teacher_id', $teacher->id))
                       ->orWhereHas('academicClass', fn (Builder $q) => $q->where('teacher_id', $teacher->id));
@@ -224,9 +267,11 @@ class TeacherAcademicService
 
     public function updateGradeForTeacher(Teacher $teacher, int $gradeId, array $data): Grade
     {
+        $subjectId = $teacher->subject_id ?? \App\Models\Subject::query()->first()?->id;
+
         $grade = Grade::query()
             ->where('id', $gradeId)
-            ->where('subject_id', $teacher->subject_id)
+            ->where('subject_id', $subjectId)
             ->where(function (Builder $query) use ($teacher) {
                 $query->whereHas('academicClass.schedules', fn (Builder $q) => $q->where('teacher_id', $teacher->id))
                       ->orWhereHas('academicClass', fn (Builder $q) => $q->where('teacher_id', $teacher->id));

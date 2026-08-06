@@ -85,6 +85,18 @@ class WarningLetterService
             'warning_letter_id' => $letter->id,
         ]);
 
+        if ($student->user) {
+            $student->user->notifications()->create([
+                'id' => (string) \Illuminate\Support\Str::uuid(),
+                'type' => 'student_sp_issued',
+                'data' => [
+                    'title' => "Surat Peringatan SP{$level} Diterbitkan",
+                    'message' => "Anda menerima surat peringatan SP{$level} karena: {$reason}. Silakan hubungi Guru BK.",
+                    'warning_letter_id' => $letter->id,
+                ],
+            ]);
+        }
+
         return $letter;
     }
 
@@ -142,7 +154,7 @@ class WarningLetterService
                 ->output()
         );
 
-        return storage_path('app/' . $path);
+        return Storage::disk('local')->path($path);
     }
 
     private function hasActiveType(Student $student, int $level): bool

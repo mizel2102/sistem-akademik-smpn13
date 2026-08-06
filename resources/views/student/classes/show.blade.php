@@ -116,7 +116,7 @@
                     <tbody class="divide-y divide-slate-100">
                         @forelse($myAttendances as $att)
                             <tr class="hover:bg-slate-50/50">
-                                <td class="px-6 py-4 font-semibold text-slate-900">{{ \Carbon\Carbon::parse($att->date)->translatedFormat('l, d F Y') }}</td>
+                                <td class="px-6 py-4 font-semibold text-slate-900">{{ $att->attendance_time->translatedFormat('l, d F Y') }}</td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold {{ $att->status === 'present' ? 'bg-green-100 text-green-700' : ($att->status === 'sick' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700') }}">
                                         {{ strtoupper($att->status) }}

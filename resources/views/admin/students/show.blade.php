@@ -66,6 +66,17 @@
                 </div>
             </div>
 
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <div class="space-y-3">
+                <a href="{{ route('admin.reports.rapor', $student) }}" class="block rounded-2xl border border-navy px-5 py-3 text-center text-sm font-semibold text-navy transition hover:bg-navy/5">
+                    Lihat Rapor
+                </a>
+                <a href="{{ route('admin.reports.rapor.pdf', $student) }}" class="block rounded-2xl border border-navy px-5 py-3 text-center text-sm font-semibold text-navy transition hover:bg-navy/5">
+                    Unduh PDF Rapor
+                </a>
+            </div>
+
             <div class="mt-6">
                 <a href="{{ route('admin.students.edit', $student) }}" class="block rounded-2xl bg-navy px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-opacity-90">
                     Edit Data

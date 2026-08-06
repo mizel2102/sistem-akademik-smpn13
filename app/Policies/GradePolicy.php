@@ -23,8 +23,9 @@ class GradePolicy
 
         if ($user->hasRole('teacher') && $user->teacher) {
             $teacher = $user->teacher;
+            $subjectId = $teacher->subject_id ?? \App\Models\Subject::query()->first()?->id;
             return $grade->academicClass->teacher_id === $teacher->id || (
-                $grade->subject_id === $teacher->subject_id &&
+                $grade->subject_id === $subjectId &&
                 ($grade->academicClass->teacher_id === $teacher->id || $grade->academicClass->schedules()->where('teacher_id', $teacher->id)->exists())
             );
         }

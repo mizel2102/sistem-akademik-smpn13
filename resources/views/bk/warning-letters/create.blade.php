@@ -11,29 +11,36 @@
         <form action="{{ route('bk.warning-letters.store') }}" method="POST" class="space-y-5">
             @csrf
 
-            <!-- Student -->
+            <!-- Student Name Input (Text Input) -->
             <div>
-                <label for="student_id" class="block text-sm font-semibold text-slate-700 mb-1">Siswa <span class="text-red-500">*</span></label>
-                <select name="student_id" id="student_id" required
-                        class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-navy focus:outline-none @error('student_id') border-red-500 @enderror">
-                    <option value="">Pilih Siswa</option>
-                    @foreach ($students as $student)
-                        <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}
-                                data-alpha="{{ $student->alpha_count }}">
-                            {{ $student->student_number }} - {{ $student->user?->name ?? 'N/A' }}
-                            @if ($student->academicClass)
-                                ({{ $student->academicClass->name }})
-                            @endif
-                            — Alpha: {{ $student->alpha_count }}
-                        </option>
-                    @endforeach
-                </select>
+                <label for="student_name" class="block text-sm font-semibold text-slate-700 mb-1">Nama Siswa / NIS <span class="text-red-500">*</span></label>
+                <input type="text" name="student_name" id="student_name" required
+                       value="{{ old('student_name', request('student_name')) }}"
+                       placeholder="Ketik Nama Siswa atau NIS (contoh: REYHAN LUBIS SAPUTRA atau 2502287)..."
+                       class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-navy focus:outline-none @error('student_name') border-red-500 @enderror @error('student_id') border-red-500 @enderror">
+                @error('student_name')
+                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
                 @error('student_id')
                     <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                 @enderror
-                <p id="alpha-info" class="mt-2 text-xs text-slate-500 hidden">
-                    Total alpha semester ini: <span id="alpha-count" class="font-semibold text-red-600">0</span>
-                </p>
+            </div>
+
+            <!-- Kelas (Class) -->
+            <div>
+                <label for="academic_class_id" class="block text-sm font-semibold text-slate-700 mb-1">Kelas Siswa</label>
+                <select name="academic_class_id" id="academic_class_id"
+                        class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-navy focus:outline-none @error('academic_class_id') border-red-500 @enderror">
+                    <option value="">-- Pilih Kelas Siswa (Opsional) --</option>
+                    @foreach ($academicClasses as $class)
+                        <option value="{{ $class->id }}" {{ old('academic_class_id') == $class->id ? 'selected' : '' }}>
+                            {{ $class->name }} @if($class->room) ({{ $class->room }}) @endif
+                        </option>
+                    @endforeach
+                </select>
+                @error('academic_class_id')
+                    <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                @enderror
             </div>
 
             <!-- SP Type -->

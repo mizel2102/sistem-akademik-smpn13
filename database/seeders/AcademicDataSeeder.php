@@ -23,16 +23,37 @@ class AcademicDataSeeder extends Seeder
             return;
         }
 
+        // Seed real subjects
+        $subjects = [
+            ['name' => 'Matematika Dasar', 'code' => 'MTK-DSR'],
+            ['name' => 'Bahasa Indonesia', 'code' => 'IND'],
+            ['name' => 'IPA Terpadu', 'code' => 'IPA-TRP'],
+        ];
+
+        $subjectIds = [];
+        foreach ($subjects as $subj) {
+            $subject = \App\Models\Subject::firstOrCreate(
+                ['code' => $subj['code']],
+                ['name' => $subj['name']]
+            );
+            $subjectIds[$subj['name']] = $subject->id;
+        }
+
+        // Clean up dummy subject if it exists
+        \App\Models\Subject::where('code', 'DUMMY-SUBJ')->orWhere('name', 'Uji Coba')->delete();
+
         $teacher = Teacher::query()->where('user_id', '=', $teacherUser->id)->first();
 
         if (! $teacher) {
             $teacher = Teacher::query()->create([
                 'user_id' => $teacherUser->id,
                 'nip' => 'TCH-001',
-                'subject_id' => null,
+                'subject_id' => $subjectIds['Matematika Dasar'],
                 'phone' => null,
                 'address' => null,
             ]);
+        } else {
+            $teacher->update(['subject_id' => $subjectIds['Matematika Dasar']]);
         }
 
         $student = Student::query()->where('user_id', '=', $studentUser->id)->first();
@@ -65,6 +86,8 @@ class AcademicDataSeeder extends Seeder
             $academicClass->students()->syncWithoutDetaching([$student->id]);
         }
 
+        $activeSemesterId = \App\Models\Semester::active()?->id ?? \App\Models\Semester::first()?->id;
+
         Grade::firstOrCreate([
             'student_id' => $student->id,
             'academic_class_id' => $academicClasses[0]->id,
@@ -72,6 +95,8 @@ class AcademicDataSeeder extends Seeder
         ], [
             'score' => 88,
             'status' => 'Baik',
+            'subject_id' => $subjectIds['Matematika Dasar'],
+            'semester_id' => $activeSemesterId,
         ]);
 
         Grade::firstOrCreate([
@@ -81,6 +106,8 @@ class AcademicDataSeeder extends Seeder
         ], [
             'score' => 92,
             'status' => 'Sangat Baik',
+            'subject_id' => $subjectIds['Bahasa Indonesia'],
+            'semester_id' => $activeSemesterId,
         ]);
 
         Grade::firstOrCreate([
@@ -90,6 +117,8 @@ class AcademicDataSeeder extends Seeder
         ], [
             'score' => 85,
             'status' => 'Baik',
+            'subject_id' => $subjectIds['IPA Terpadu'],
+            'semester_id' => $activeSemesterId,
         ]);
     }
 }

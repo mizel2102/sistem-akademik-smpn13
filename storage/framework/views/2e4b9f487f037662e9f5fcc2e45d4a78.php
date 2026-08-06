@@ -44,6 +44,27 @@
 <?php unset($__componentOriginal6cced52613a484e7295a90162a92d81b); ?>
 <?php endif; ?>
                 </li>
+                <li>
+                    <?php if (isset($component)) { $__componentOriginal6cced52613a484e7295a90162a92d81b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal6cced52613a484e7295a90162a92d81b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-item','data' => ['route' => 'profile.show','icon' => 'user']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('nav-item'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['route' => 'profile.show','icon' => 'user']); ?>Profil Saya <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal6cced52613a484e7295a90162a92d81b)): ?>
+<?php $attributes = $__attributesOriginal6cced52613a484e7295a90162a92d81b; ?>
+<?php unset($__attributesOriginal6cced52613a484e7295a90162a92d81b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal6cced52613a484e7295a90162a92d81b)): ?>
+<?php $component = $__componentOriginal6cced52613a484e7295a90162a92d81b; ?>
+<?php unset($__componentOriginal6cced52613a484e7295a90162a92d81b); ?>
+<?php endif; ?>
+                </li>
             </ul>
         </div>
 
@@ -685,27 +706,6 @@
 <?php unset($__componentOriginal6cced52613a484e7295a90162a92d81b); ?>
 <?php endif; ?>
                     </li>
-                    <li>
-                        <?php if (isset($component)) { $__componentOriginal6cced52613a484e7295a90162a92d81b = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal6cced52613a484e7295a90162a92d81b = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.nav-item','data' => ['route' => 'student.schedule.index','icon' => 'calendar']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('nav-item'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['route' => 'student.schedule.index','icon' => 'calendar']); ?>Jadwal <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal6cced52613a484e7295a90162a92d81b)): ?>
-<?php $attributes = $__attributesOriginal6cced52613a484e7295a90162a92d81b; ?>
-<?php unset($__attributesOriginal6cced52613a484e7295a90162a92d81b); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal6cced52613a484e7295a90162a92d81b)): ?>
-<?php $component = $__componentOriginal6cced52613a484e7295a90162a92d81b; ?>
-<?php unset($__componentOriginal6cced52613a484e7295a90162a92d81b); ?>
-<?php endif; ?>
-                    </li>
                 </ul>
             </div>
 
@@ -742,16 +742,20 @@
     <!-- Sidebar Footer -->
     <div class="border-t border-white/10 px-4 py-6">
         <?php if(auth()->check()): ?>
-            <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-                    <?php echo e(optional(auth()->user())->name ? substr(auth()->user()->name, 0, 2) : 'U'); ?>
+            <a href="<?php echo e(route('profile.show')); ?>" class="flex items-center gap-3 group transition hover:opacity-90">
+                <?php if(auth()->user()?->avatar_url): ?>
+                    <img src="<?php echo e(auth()->user()->avatar_url); ?>" alt="<?php echo e(auth()->user()->name); ?>" class="h-10 w-10 rounded-full object-cover ring-2 ring-gold transition-all">
+                <?php else: ?>
+                    <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white group-hover:ring-2 group-hover:ring-gold transition-all">
+                        <?php echo e(optional(auth()->user())->name ? substr(auth()->user()->name, 0, 2) : 'U'); ?>
 
-                </div>
+                    </div>
+                <?php endif; ?>
                 <div class="min-w-0 flex-1">
-                    <p class="truncate text-sm font-semibold text-white"><?php echo e(optional(auth()->user())->name); ?></p>
+                    <p class="truncate text-sm font-semibold text-white group-hover:text-gold transition-colors"><?php echo e(optional(auth()->user())->name); ?></p>
                     <p class="truncate text-xs text-slate-400 capitalize"><?php echo e($role ?? 'User'); ?></p>
                 </div>
-            </div>
+            </a>
             <form action="<?php echo e(route('logout')); ?>" method="POST" class="mt-4">
                 <?php echo csrf_field(); ?>
                 <button type="submit"

@@ -70,6 +70,7 @@ class DashboardController extends Controller
                                             ->get();
         }
 
+        $activeSp = null;
         if ($role === 'student' && $user->student) {
             $attendanceCount = $user->student->attendances()->count();
             $presentCount = $user->student->attendances()->whereIn('status', ['present', 'late'])->count();
@@ -78,8 +79,9 @@ class DashboardController extends Controller
                 'grades' => $user->student->grades()->count(),
                 'classes' => $user->student->classes()->count(),
             ];
+            $activeSp = $user->student->warningLetters()->whereNull('resolved_at')->latest('issued_at')->first();
         }
 
-        return view('dashboard', compact('role', 'statistics', 'personalStats', 'recentAttendances', 'recentAnnouncements', 'recentWarningLetters'));
+        return view('dashboard', compact('role', 'statistics', 'personalStats', 'recentAttendances', 'recentAnnouncements', 'recentWarningLetters', 'activeSp'));
     }
 }

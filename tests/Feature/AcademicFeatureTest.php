@@ -982,4 +982,107 @@ class AcademicFeatureTest extends TestCase
         $this->assertTrue($student->fresh()->classes()->where('academic_class_id', $class7->id)->exists());
         $this->assertEquals($class7->id, $student->fresh()->academic_class_id);
     }
+
+    public function test_student_can_submit_attendance_as_sick_with_evidence_and_reason_bypassing_gps(): void
+    {
+        Storage::fake('public');
+
+        $studentUser = $this->createUserWithRole('student');
+        $student = Student::create([
+            'user_id' => $studentUser->id,
+            'student_number' => 'S-199',
+            'grade_level' => '7',
+        ]);
+
+        $teacherUser = $this->createUserWithRole('teacher');
+        $teacher = Teacher::create([
+            'user_id' => $teacherUser->id,
+            'nip' => 'T-199',
+            'phone' => '081234567899',
+        ]);
+
+        $class = AcademicClass::create([
+            'teacher_id' => $teacher->id,
+            'name' => '7C',
+            'room' => 'C1',
+            'schedule' => 'Rabu, 10:00 - 11:30',
+        ]);
+
+        $student->classes()->syncWithoutDetaching($class->id);
+
+        config([
+            'app.school_latitude' => -6.2000000,
+            'app.school_longitude' => 106.8166667,
+        ]);
+
+        // Submit attendance from far away (GPS validation should be bypassed)
+        $response = $this->actingAs($studentUser)->post(route('student.attendance.store'), [
+            'academic_class_id' => $class->id,
+            'latitude' => 0.0000000, // completely different location
+            'longitude' => 0.0000000,
+            'distance' => 999999,
+            'attendance_time' => now()->toIso8601String(),
+            'status' => 'sick',
+            'reason' => 'Sakit demam tinggi',
+            'evidence' => UploadedFile::fake()->create('surat_dokter.pdf', 100, 'application/pdf'),
+        ]);
+
+        $response->assertRedirect(route('student.attendance.history'));
+        $this->assertDatabaseHas('attendances', [
+            'student_id' => $student->id,
+            'academic_class_id' => $class->id,
+            'status' => 'sick',
+            'reason' => 'Sakit demam tinggi',
+        ]);
+    }
+
+    public function test_auto_alpha_console_command(): void
+    {
+        $teacherUser = $this->createUserWithRole('teacher');
+        $teacher = Teacher::create([
+            'user_id' => $teacherUser->id,
+            'nip' => 'T-200',
+            'phone' => '081234567999',
+        ]);
+        $class = AcademicClass::create([
+            'teacher_id' => $teacher->id,
+            'name' => '7D',
+            'room' => 'D1',
+            'schedule' => 'Kamis, 08:00 - 09:30',
+        ]);
+
+        $studentUser = $this->createUserWithRole('student');
+        $student = Student::create([
+            'user_id' => $studentUser->id,
+            'student_number' => 'S-200',
+            'grade_level' => '7',
+            'academic_class_id' => $class->id,
+        ]);
+
+        // Create an active semester
+        $academicYear = \App\Models\AcademicYear::create([
+            'name' => '2026/2027',
+            'start_date' => '2026-07-01',
+            'end_date' => '2027-06-30',
+        ]);
+
+        $activeSemester = \App\Models\Semester::create([
+            'academic_year_id' => $academicYear->id,
+            'name' => 'Ganjil',
+            'start_date' => '2026-07-01',
+            'end_date' => '2026-12-31',
+            'active' => true,
+        ]);
+
+        // We run the command
+        $this->artisan('attendance:generate-alpha')
+            ->expectsOutputToContain('Successfully generated')
+            ->assertExitCode(0);
+
+        // Check if student now has an alpha record
+        $this->assertDatabaseHas('attendances', [
+            'student_id' => $student->id,
+            'status' => 'alpha',
+        ]);
+    }
 }

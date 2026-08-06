@@ -109,7 +109,7 @@
                     required
                 >
                     <option value="">-- Pilih Hari --</option>
-                    @foreach(['monday' => 'Senin', 'tuesday' => 'Selasa', 'wednesday' => 'Rabu', 'thursday' => 'Kamis', 'friday' => 'Jumat', 'saturday' => 'Sabtu'] as $value => $label)
+                    @foreach(['Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'] as $value => $label)
                         <option value="{{ $value }}" {{ old('day', $schedule->day) === $value ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>

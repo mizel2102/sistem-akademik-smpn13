@@ -17,10 +17,14 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): \Illuminate\Http\RedirectResponse|\Illuminate\View\View
     {
         $user = $request->user();
         $role = $user?->getRoleNames()->first() ?? 'user';
+
+        if ($role === 'guru-bk' || $role === 'guru_bk') {
+            return redirect()->route('bk.dashboard');
+        }
 
         $statistics = [
             'users' => User::query()->count('*'),

@@ -21,8 +21,9 @@
                 <p class="font-semibold text-blue-900">Ketentuan Waktu & Lokasi Absensi:</p>
                 <p class="text-slate-700">1. Jam Masuk Sekolah: <span class="font-bold text-navy">{{ config('app.school_entry_time', '06:45') }} WIB</span>.</p>
                 <p class="text-slate-700">2. Batas Toleransi Keterlambatan: <span class="font-bold text-navy">15 Menit</span> (Maksimal jam <span class="font-bold text-emerald-700">07:00 WIB</span>).</p>
-                <p class="text-slate-700">3. Absensi yang dilakukan setelah jam <span class="font-bold text-red-600">07:00 WIB</span> akan otomatis dicatat sebagai <span class="font-bold text-amber-700">TERLAMBAT</span>.</p>
-                <p class="text-slate-700">4. Pastikan Anda berada dalam radius {{ config('app.school_max_distance_meters', 100) }} meter dari lokasi sekolah.</p>
+                <p class="text-slate-700">3. Absensi yang dilakukan setelah jam <span class="font-bold text-red-600">07:00 WIB</span> akan otomatis dicatat sebagai <span class="font-bold text-amber-700">TERLAMBAT</span> (masih bisa absen lewat jam 09:00 WIB).</p>
+                <p class="text-slate-700">4. Pastikan Anda berada dalam radius {{ config('app.school_max_distance_meters', 100) }} meter dari lokasi sekolah (hanya untuk status Hadir).</p>
+                <p class="text-slate-700">5. Untuk siswa yang Sakit atau Izin, silakan pilih status yang sesuai dan isi Alasan beserta unggah Surat Bukti.</p>
             </div>
         </div>
     </div>
@@ -94,6 +95,55 @@
             </div>
 
             <div>
+                <label for="status_select" class="mb-2 block text-sm font-semibold text-slate-900">Status Kehadiran</label>
+                <select
+                    id="status_select"
+                    x-model="status"
+                    @change="onStatusChange"
+                    class="w-full rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 transition focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20"
+                >
+                    <option value="present">Hadir</option>
+                    <option value="sick">Sakit</option>
+                    <option value="permission">Izin</option>
+                </select>
+                @error('status')
+                    <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Form Sakit / Izin (Hanya muncul jika status sick atau permission) -->
+            <div x-show="status === 'sick' || status === 'permission'" x-cloak class="space-y-4">
+                <div>
+                    <label for="reason" class="mb-2 block text-sm font-semibold text-slate-900">Alasan Keterangan <span class="text-red-500">*</span></label>
+                    <textarea
+                        id="reason"
+                        name="reason"
+                        rows="3"
+                        placeholder="Contoh: Sakit demam dan flu / Izin ada keperluan keluarga..."
+                        class="w-full rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 transition focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20 @error('reason') border-red-500 @enderror"
+                        :required="status === 'sick' || status === 'permission'"
+                    >{{ old('reason') }}</textarea>
+                    @error('reason')
+                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="evidence" class="mb-2 block text-sm font-semibold text-slate-900">Upload Surat Bukti (PDF/JPG/PNG, Maks 2MB) <span class="text-red-500">*</span></label>
+                    <input
+                        type="file"
+                        id="evidence"
+                        name="evidence"
+                        class="w-full rounded-2xl border-2 border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 transition focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/20 @error('evidence') border-red-500 @enderror"
+                        :required="status === 'sick' || status === 'permission'"
+                    />
+                    @error('evidence')
+                        <p class="mt-2 text-sm text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div x-show="status === 'present' || status === 'late'">
                 <label class="mb-2 block text-sm font-semibold text-slate-900">Foto Absensi (Smart Capture Kamera)</label>
                 
                 <input type="hidden" name="selfie_base64" x-model="selfieBase64">
@@ -163,7 +213,7 @@
                 @error('selfie_base64') <p class="mt-2 text-sm text-red-500">{{ $message }}</p> @enderror
             </div>
 
-            <button type="submit" :disabled="!isWithinRange || loadingLocation || !captured" :class="{'opacity-50 cursor-not-allowed': !isWithinRange || loadingLocation || !captured}" class="w-full rounded-2xl bg-navy px-6 py-3.5 text-sm font-bold text-white transition hover:bg-opacity-90 shadow-lg">
+            <button type="submit" :disabled="(status === 'present' || status === 'late') && (!isWithinRange || loadingLocation || !captured)" :class="{'opacity-50 cursor-not-allowed': (status === 'present' || status === 'late') && (!isWithinRange || loadingLocation || !captured)}" class="w-full rounded-2xl bg-navy px-6 py-3.5 text-sm font-bold text-white transition hover:bg-opacity-90 shadow-lg">
                 Kirim Absensi
             </button>
         </form>
@@ -218,6 +268,20 @@
                 }
 
                 this.getLocation();
+            },
+
+            onStatusChange() {
+                if (this.status === 'sick' || this.status === 'permission') {
+                    this.isWithinRange = true;
+                    this.loadingLocation = false;
+                    this.captured = true;
+                } else {
+                    this.captured = false;
+                    this.selfieBase64 = '';
+                    this.selfiePreview = '';
+                    this.isWithinRange = false;
+                    this.getLocation();
+                }
             },
 
             async startCamera() {

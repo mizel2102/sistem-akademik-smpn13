@@ -79,7 +79,7 @@ class TeacherAcademicService
             'schedule' => $data['schedule'],
         ]);
 
-        $this->autoEnrollStudentsByGradeLevel($class);
+        // $this->autoEnrollStudentsByGradeLevel($class);
 
         return $class;
     }

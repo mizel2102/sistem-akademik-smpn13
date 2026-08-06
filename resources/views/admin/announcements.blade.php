@@ -13,6 +13,7 @@
         </div>
     </div>
 
+    @if(auth()->user()?->hasRole('admin'))
     <!-- Create Announcement Form (Collapsible) -->
     <div x-data="{ formOpen: false }">
         <button
@@ -150,6 +151,7 @@
             </form>
         </div>
     </div>
+    @endif
 
     <!-- Announcements List -->
     <div class="space-y-3 rounded-2xl bg-white p-6 shadow-sm">
@@ -205,6 +207,7 @@
                     </p>
                 </div>
 
+                @if(auth()->user()?->hasRole('admin'))
                 <!-- Actions -->
                 <div class="flex flex-shrink-0 gap-2">
                     <!-- Edit Button -->
@@ -262,6 +265,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         @empty
             <!-- Empty State -->

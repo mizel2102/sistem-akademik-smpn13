@@ -97,22 +97,31 @@ class AttendanceController extends Controller
             return redirect()->back()->withErrors(['academic_class_id' => 'Kelas tidak ditemukan atau tidak terdaftar untuk siswa.']);
         }
 
-        // Validate Distance from backend
-        $schoolLat = config('app.school_latitude');
-        $schoolLng = config('app.school_longitude');
-        $calculatedDistance = $this->calculateDistance(
-            (float) $request->latitude,
-            (float) $request->longitude,
-            (float) $schoolLat,
-            (float) $schoolLng
-        );
+        $data = $request->validated();
+        $status = $data['status'] ?? 'present';
+        $isSickOrPermission = in_array($status, ['sick', 'permission']);
 
-        $maxDistance = (int) config('app.school_max_distance_meters', 50);
-        if ($calculatedDistance > $maxDistance) {
-            return redirect()->back()->withErrors(['distance' => 'Jarak Anda (' . round($calculatedDistance) . 'm) melebihi batas maksimal ' . $maxDistance . ' meter dari sekolah.'])->withInput();
+        if ($isSickOrPermission) {
+            $calculatedDistance = 0;
+            $data['latitude'] = $request->latitude ?? 0.0;
+            $data['longitude'] = $request->longitude ?? 0.0;
+        } else {
+            // Validate Distance from backend
+            $schoolLat = config('app.school_latitude');
+            $schoolLng = config('app.school_longitude');
+            $calculatedDistance = $this->calculateDistance(
+                (float) $request->latitude,
+                (float) $request->longitude,
+                (float) $schoolLat,
+                (float) $schoolLng
+            );
+
+            $maxDistance = (int) config('app.school_max_distance_meters', 100);
+            if ($calculatedDistance > $maxDistance) {
+                return redirect()->back()->withErrors(['distance' => 'Jarak Anda (' . round($calculatedDistance) . 'm) melebihi batas maksimal ' . $maxDistance . ' meter dari sekolah.'])->withInput();
+            }
         }
 
-        $data = $request->validated();
         $data['student_id'] = $student->id;
         $data['distance'] = round($calculatedDistance);
         $data['ip_address'] = $request->ip();
@@ -127,7 +136,7 @@ class AttendanceController extends Controller
         $schoolStartTime = $attendanceTime->copy()->setTimeFromTimeString($entryTimeStr);
         $lateCutoffTime = $schoolStartTime->copy()->addMinutes($toleranceMinutes);
 
-        if (in_array($data['status'] ?? 'present', ['present', 'late', 'hadir', 'terlambat'])) {
+        if (in_array($status, ['present', 'late', 'hadir', 'terlambat'])) {
             if ($attendanceTime->greaterThan($lateCutoffTime)) {
                 $data['status'] = 'late';
             } else {
@@ -135,22 +144,32 @@ class AttendanceController extends Controller
             }
         }
 
-        if ($request->hasFile('selfie')) {
-            $data['selfie_path'] = $request->file('selfie')->store('attendances', 'public');
-        } elseif ($request->filled('selfie_base64')) {
-            $imageData = $request->input('selfie_base64');
-            $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $imageData);
-            $imageData = str_replace(' ', '+', $imageData);
-            $fileName = 'attendances/' . \Illuminate\Support\Str::random(40) . '.jpg';
-            \Illuminate\Support\Facades\Storage::disk('public')->put($fileName, base64_decode($imageData));
-            $data['selfie_path'] = $fileName;
+        if ($isSickOrPermission) {
+            if ($request->hasFile('evidence')) {
+                $data['evidence_path'] = $request->file('evidence')->store('evidences', 'public');
+            }
+            $data['reason'] = $request->input('reason');
+        } else {
+            if ($request->hasFile('selfie')) {
+                $data['selfie_path'] = $request->file('selfie')->store('attendances', 'public');
+            } elseif ($request->filled('selfie_base64')) {
+                $imageData = $request->input('selfie_base64');
+                $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $imageData);
+                $imageData = str_replace(' ', '+', $imageData);
+                $fileName = 'attendances/' . \Illuminate\Support\Str::random(40) . '.jpg';
+                \Illuminate\Support\Facades\Storage::disk('public')->put($fileName, base64_decode($imageData));
+                $data['selfie_path'] = $fileName;
+            }
         }
 
         $attendanceService->createAttendance($data);
 
-        $statusLabel = $data['status'] === 'late'
-            ? 'Terlambat (melewati batas waktu ' . $lateCutoffTime->format('H:i') . ' WIB)'
-            : 'Hadir Tepat Waktu';
+        $statusLabel = match ($data['status']) {
+            'sick' => 'Sakit',
+            'permission' => 'Izin',
+            'late' => 'Terlambat (melewati batas waktu ' . $lateCutoffTime->format('H:i') . ' WIB)',
+            default => 'Hadir Tepat Waktu',
+        };
 
         return redirect()->route('student.attendance.history')->with('success', "Absensi berhasil disimpan. Status: {$statusLabel}.");
     }

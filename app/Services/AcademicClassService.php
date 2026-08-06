@@ -42,7 +42,7 @@ class AcademicClassService
 
         $class = AcademicClass::create($data);
 
-        app(TeacherAcademicService::class)->autoEnrollStudentsByGradeLevel($class);
+        // app(TeacherAcademicService::class)->autoEnrollStudentsByGradeLevel($class);
 
         return $class;
     }

@@ -235,6 +235,7 @@
             maxDistance: parseInt("{{ config('app.school_max_distance_meters', 100) }}"),
             loadingLocation: true,
             locationError: '',
+            isWithinRange: false,
             isLate: false,
             entryTime: "{{ config('app.school_entry_time', '06:45') }}",
             lateTolerance: parseInt("{{ config('app.school_late_tolerance_minutes', 15) }}"),
